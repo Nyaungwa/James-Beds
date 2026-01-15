@@ -311,6 +311,49 @@
     margin: 10px 40px;    
 }
 
+.footer {
+    background-color: #111;
+    color: white;
+    padding: 50px 40px 30px;
+}
+
+/* This is the MAIN FIX */
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    gap: 60px;
+}
+
+.footer-column h4 {
+    margin-bottom: 14px;
+    font-size: 18px;
+}
+
+.footer-column p {
+    margin: 6px 0;
+    font-size: 14px;
+    color: #ccc;
+}
+
+
+.follow-us-bottom {
+    margin-top: 40px;
+    padding-top: 20px;
+    text-align: center;
+}
+
+
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 22px;
+    font-size:22px
+}
+
+
+
+
 
 
 

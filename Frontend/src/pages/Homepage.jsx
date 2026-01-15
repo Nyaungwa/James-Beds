@@ -1,6 +1,7 @@
 import React from "react";
 import "./Homepage.css";
-import {FaUser, FaShoppingCart, FaSearch} from "react-icons/fa";
+import {FaUser, FaShoppingCart, FaSearch, FaFacebookF, FaInstagram} from "react-icons/fa";
+
 
 function HomePage() {
     return (
@@ -198,6 +199,43 @@ function HomePage() {
                 </div>                
             </div>
         </div>
+
+        <footer className="footer">
+            <div className="footer-content">
+
+                <div className="footer-column">
+                    <h4>Get In Touch</h4>
+                    <p>Email: cjnr@gmail.com</p>
+                    <p>WhatsApp: 067 9567</p>
+                    <p>Phone: 058 5885</p> 
+                </div>  
+
+                <div className="footer-column">
+                    <h4>Product</h4>
+                    <p>Beds</p>
+                    <p>Mattresses</p>
+                    <p>Headboards</p>
+                </div>
+
+                <div className="footer-column">
+                    <h4>Company Info</h4>
+                    <p>Terms & Conditions</p>
+                    <p>Privacy Policy</p>
+                    <p>Contact Us</p>
+                </div>
+             </div>
+
+            <div className="follow-us-bottom">
+                <h4>Follow Us</h4>
+                
+                <div className="social-icons">
+                    <div className="icon-items">
+                        <FaFacebookF className="icon" />
+                        <FaInstagram className="icon" />
+                    </div>
+                </div>
+            </div>
+        </footer>
     </div>
     );
 }
