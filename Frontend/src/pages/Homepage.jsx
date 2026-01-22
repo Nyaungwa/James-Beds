@@ -1,9 +1,13 @@
 import React from "react";
 import "./Homepage.css";
 import {FaUser, FaShoppingCart, FaSearch, FaFacebookF, FaInstagram} from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+
 
 
 function HomePage() {
+
+    const navigate = useNavigate();
     return (
         <div className = "homepage-cointaner">
 
@@ -51,22 +55,21 @@ function HomePage() {
      
         {/* Search Beds Background */}
         <div className = "filterBox-background">
-            <div className="filter-box">
                 <h2 className="filter-title">Beds for Sale</h2>
                 <p className="filter-subtitle">
                     Let's see what you are comfortable with
                 </p>
 
-                <div className="filter-row center">
+            <div className="filter-box">
+                <div className="filter-row inline">
                     <select className="filter-input small">
-                    <option>Type</option>
-                    <option>Bed</option>
-                    <option>Mattress</option>
-                    <option>Headboard</option>
+                        <option>Type</option>
+                        <option>Bed</option>
+                        <option>Mattress</option>
+                        <option>Headboard</option>
                     </select>
-                </div>
 
-                <div className="filter-row split">
+
                     <select className="filter-input small">
                         <option>Size</option>
                         <option>Single</option>
@@ -81,10 +84,14 @@ function HomePage() {
                         <option>Spring</option>
                         <option>Hybrid</option>
                     </select>
+                    <div className="filter-row center">
+                        <button className="filter-button small">
+                            Search
+                        </button>
+                    </div>
+                    
                 </div>
-                <button className="filter-button center">
-                    Search
-                </button>
+
             </div>
 
         </div>
@@ -92,62 +99,107 @@ function HomePage() {
         {/*Products for sale Section*/}
         <h2 className ="beds-section-name">Beds for sale</h2>
         <div className = "beds-section">
-            <div className = "beds-card1">
+            <div className = "beds-card">
                 <img
-                   src="/src/assets/go-ultra-105-grey-base-_1_.jpg"
+                   src="/src/assets/Single.jpeg"
                    alt = "Luxury Beds"
                    className = "bed-images"
                 />
                 <div className = "bed-info">
                     <h3>Firm Single Bed Set</h3>
                     <p className = "price"> R1999 </p>
-                    <button className = "add-cart">Add to Cart</button>    
+                    <button className = "add-cart"
+                    onClick={() =>
+                        navigate("/product/1", {
+                            state: {
+                                name: "Firm Single Bed Set",
+                                price: 1999,
+                                image: "/src/assets/Single.jpeg"
+                            }
+                        })
+                    }                  
+
+                    > Add to Cart 
+                    </button>    
                 </div>                
             </div>
 
-            <div className = "beds-card2">
+            <div className = "beds-card">
                 <img
-                   src="/src/assets/go-ultra-105-grey-base-_1_.jpg"
+                   src="/src/assets/Double.jpeg"
                    alt = "Luxury Beds"
                    className = "bed-images"
                 />
                 <div className = "bed-info">
                     <h3>Firm Double Bed Set</h3>
                     <p className = "price"> R2999 </p>
-                    <button className = "add-cart">Add to Cart</button>    
+                    <button className = "add-cart"
+                    onClick={() =>
+                        navigate("/product/2", {
+                            state: {
+                                name: "Firm Double Bed Set",
+                                price: 2999,
+                                image: "/src/assets/Double.jpeg"
+                            }
+                        })
+                    }            
+                    >Add to Cart
+                    </button>    
                 </div>                
             </div>
 
-            <div className = "beds-card3">
+            <div className = "beds-card">
                 <img
-                   src="/src/assets/willowbridge-grey-fluted-base-_2_.jpg"
+                   src="/src/assets/Queen.jpeg"
                    alt = "Luxury Beds"
                    className = "bed-images"
                 />
                 <div className = "bed-info">
                     <h3>Firm Queen bed set</h3>
                     <p className = "price"> R3999 </p>
-                    <button className = "add-cart">Add to Cart</button>    
+                    <button className = "add-cart"
+                    onClick={() =>
+                        navigate("/product/3", {
+                            state: {
+                                name: "Firm Queen bed set",
+                                price: 3999,
+                                image: "/src/assets/Queen.jpeg"
+                            }
+                        })
+                    }            
+                    >Add to Cart
+                    </button>    
                 </div>                
             </div>
 
-            <div className = "beds-card4">
+            <div className = "beds-card">
                 <img
-                   src="/src/assets/Dream-Safe-min.png"
+                   src="/src/assets/King.jpeg"
                    alt = "Luxury Beds"
                    className = "bed-images"
                 />
                 <div className = "bed-info">
                     <h3>Firm King bed set</h3>
                     <p className = "price"> R5999 </p>
-                    <button className = "add-cart">Add to Cart</button>    
+                    <button className = "add-cart"
+                    onClick={() =>
+                        navigate("/product/4", {
+                            state: {
+                                name: "Firm King bed set",
+                                price: 5999,
+                                image: "/src/assets/King.jpeg"
+                            }
+                        })
+                    }            
+                    >Add to Cart
+                    </button>    
                 </div>                
             </div>
         </div>
         <h2 className ="beds-section-name">Mattress for sale</h2>
 
         <div className= "mattress-section">
-            <div className = "beds-card1">
+            <div className = "beds-card">
                 <img
                    src="/src/assets/Strandmattress-Graduate-Duo-Mattress.jpg.webp"
                    alt = "Luxury mattresses"
@@ -160,7 +212,7 @@ function HomePage() {
                 </div>                
             </div>
 
-            <div className = "beds-card2">
+            <div className = "beds-card">
                 <img
                    src="/src/assets/Strandmattress-Graduate-Lux-Mattress.jpg.webp"
                    alt = "Luxury Beds"
@@ -173,7 +225,7 @@ function HomePage() {
                 </div>                
             </div>
 
-            <div className = "beds-card3">
+            <div className = "beds-card">
                 <img
                    src="/src/assets/Weightmaster-Mattress.jpg.webp"
                    alt = "Luxury Beds"
@@ -186,7 +238,7 @@ function HomePage() {
                 </div>                
             </div>
 
-            <div className = "beds-card4">
+            <div className = "beds-card">
                 <img
                    src="/src/assets/Sealy_Lannister_Extra_Firm_Mattress-1.jpg.webp"
                    alt = "Luxury Beds"

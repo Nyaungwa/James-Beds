@@ -1,62 +1,62 @@
 
-/* Overall Homepage cointaner display*/
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #fff;
+}
+
+/* =========================
+   HOMEPAGE CONTAINER
+========================= */
 .homepage-cointaner {
     width: 100%;
     min-height: 100vh;
-    background-color:white;
 }
 
-/* Top panel bar display*/
+/* =========================
+   TOP PANEL
+========================= */
 .top-panel {
-    width:100%;
-    height: 70px;
+    width: 100%;
+    min-height: 70px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #c5f6a6;  
+    background-color: #c5f6a6;
     padding: 15px 25px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    box-sizing: border-box;
 }
 
+/* Brand */
 .brand {
     display: flex;
     flex-direction: column;
-    line-height: 0.8;
+    line-height: 1.1;
 }
 
 .brand-main {
     font-family: 'Playfair Display', serif;
-    font-size: 2.9rem;
+    font-size: 2.4rem;
     font-weight: 700;
     color: white;
-    margin:0;
 }
 
-.branch-sub {
-     font-family: 'Inter', sans-serif;
-    font-size: 1rem;
-    font-weight: 400;
+.brand-sub {
+    font-size: 0.9rem;
     color: white;
-    margin:0;
 }
+
+/* =========================
+   SEARCH
+========================= */
 .search-selection {
     flex: 1;
     display: flex;
     justify-content: center;
-}
-
-.search-input {
-    width: 100%;
-    padding: 10px 50px 10px 15px;
-    font-size: 1rem;
-    border-radius: 25px;
-    border: 1px solid #b0cdee;
-    outline: none;
-    transition: 0.2s;
-    border-color: white;
-    background-color: white;
-    color: black; 
 }
 
 .search-box {
@@ -64,43 +64,31 @@
     width: 60%;
 }
 
-.search-icon{
+.search-input {
+    width: 100%;
+    height: 44px;
+    padding: 0 45px 0 15px;
+    border-radius: 25px;
+    border: none;
+    outline: none;
+}
+
+.search-icon {
     position: absolute;
-    right: 25px;
+    right: 16px;
     top: 50%;
     transform: translateY(-50%);
-    color: #555;
     cursor: pointer;
 }
 
-/* Icons */
+/* =========================
+   ICONS
+========================= */
 .icon-selection {
     display: flex;
-    align-items: center;
     gap: 20px;
 }
 
-.usericon {
-    font-size: 2.8rem;
-    cursor: pointer;
-    color: white;
-}
-
-/*Cart with count*/
-.cart-cointaner {
-    position: relative;
-}
-
-.cart-count {
-    position: absolute;
-    top: -10px;
-    right: -12px;
-    background: #ff4747;
-    color: white; 
-    padding: 2px 7px;
-    border-radius: 50%;
-    font-size: 0.8rem;
-}
 .icon-items {
     display: flex;
     align-items: center;
@@ -110,182 +98,124 @@
 }
 
 .icon-text {
-    font-size: 0.9rem;
     color: white;
-    font-weight: 500;
+    font-size: 0.9rem;
 }
 
 .cart-icon-wrapper {
-    position:relative;
-}
-
-/*Main*/
-.body {
-    padding: 40px;
-    text-align: center;
-}
-
-.filterBox-background {
-    width: 100%;
-    height: 100vh;                 
-    background-image: url("../assets/elegant-rendering-interior-design.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
     position: relative;
 }
 
+.cart-count {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    background: red;
+    color: white;
+    font-size: 0.75rem;
+    padding: 2px 6px;
+    border-radius: 50%;
+}
+
+/* =========================
+   HERO / FILTER SECTION
+========================= */
+.filterBox-background {
+    width: 100%;
+    min-height: 100vh;
+    background: url("../assets/elegant-rendering-interior-design.jpg") center/cover no-repeat;
+    padding: 80px 8%;
+}
+
+/* Titles OUTSIDE the box */
 .filter-title {
     font-family: 'Playfair Display', serif;
-    font-size: 2rem;
-    font-weight: 700;
-    margin: 0;
-    color: #222;
+    font-size: 2.2rem;
+    color: white;
 }
+
 .filter-subtitle {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.95rem;
-    font-style: italic;
-    color: #666;
-    margin-top: 4px;
-    margin-bottom: 20px;
+    font-size: 1rem;
+    color: white;
+    margin-bottom: 30px;
 }
 
+/* Filter box */
 .filter-box {
-    position: absolute;
-    top: 50%;
-    left: 8%;
-    transform: translateY(-50%);
-
-    width: 480px;        
-    min-height: 280px;   
-
-    background-color: white;
+    max-width: 480px;
+    background: white;
     border-radius: 12px;
     padding: 25px;
-
     display: flex;
     flex-direction: column;
-    gap: 18px;
-
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    gap: 16px;
 }
 
-/* rows */
+/* Rows */
 .filter-row {
     display: flex;
-    width: 100%;
+    gap: 12px;
 }
-
 .filter-row.center {
     justify-content: center;
 }
 
-.filter-row.split {
-    justify-content: space-between;
-    gap: 12px;
-}
 
-/* smaller inputs */
-.filter-input.small {
-    width: 58%;
-    background-color: #f2f2f2;   /* light grey */
+/* Inputs + button same size */
+.filter-input.small,
+.filter-button {
+    flex: 1;
+    height: 44px;
+    border-radius: 25px;
     border: 1px solid #ddd;
+    padding: 0 15px;
 }
 
-/* Type dropdown slightly wider */
-.filter-row.center .filter-input.small {
-    width: 65%;
+.filter-button {
+    background-color: #c5f6a6;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
 }
 
-/* Button */
-.filter-button.center {
-    align-self: center;
-    width: 65%;
-    background-color: #c5f6a6;  /* SAME as top panel */
-    color: #222;
-}
 
+/* =========================
+   PRODUCTS
+========================= */
 .beds-section-name {
     font-family: 'Playfair Display', serif;
     font-size: 2rem;
-    font-weight: 700;
-    color: #222;
-    justify-content: center;
-    margin: 10px 150px;
+    margin: 40px;
 }
 
-/* Items for sale section*/
-.beds-section {
+.beds-section,
+.mattress-section {
     display: flex;
-    gap: 50px;
-    margin: 10px 40px;
+    gap: 30px;
+    padding: 0 40px 40px;
+    flex-wrap: wrap;
 }
 
-
-/* Vertical product card */
-.beds-card1 {
-    width: 20%;
-    min-height: 30vh;
+/* Reusable card */
+.beds-card {
+    width: 23%;
     background: white;
     border-radius: 14px;
-    overflow: hidden;
-    justify-content: left;
-
     box-shadow: 0 12px 30px rgba(0,0,0,0.15);
     display: flex;
     flex-direction: column;
-}
-
-.beds-card2 {
-    width: 20%;
-    min-height: 30vh;
-    background: white;
-    border-radius: 14px;
     overflow: hidden;
-    justify-content: left;
-
-    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
-    display: flex;
-    flex-direction: column;
-}
-
-.beds-card3 {
-    width: 20%;
-    min-height: 30vh;
-    background: white;
-    border-radius: 14px;
-    overflow: hidden;
-    justify-content: center;
-
-    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
-    display: flex;
-    flex-direction: column;
-}
-
-.beds-card4 {
-    width: 20%;
-    min-height: 33vh;
-    background: white;
-    border-radius: 14px;
-    overflow: hidden;
-    justify-content: center;
-
-    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
-    display: flex;
-    flex-direction: column;
 }
 
 .bed-images {
     width: 100%;
-    height: 60%;
-    object-fit: cover
+    height: 220px;
+    object-fit: cover;
 }
 
 .bed-info {
     padding: 20px;
     text-align: center;
-    flex-grow: 1;
 }
 
 .price {
@@ -295,65 +225,88 @@
 }
 
 .add-cart {
-    margin-top: auto;
-    padding: 12px 20px;
-    background-color: #c5f6a6;
-    border: none;
+    padding: 10px 20px;
     border-radius: 25px;
-    font-weight: 600;
+    border: none;
+    background-color: #c5f6a6;
     cursor: pointer;
 }
 
-
-.mattress-section {
-    display: flex;
-    gap: 50px;
-    margin: 10px 40px;    
-}
-
+/* =========================
+   FOOTER
+========================= */
 .footer {
     background-color: #111;
     color: white;
-    padding: 50px 40px 30px;
+    padding: 50px 40px;
 }
 
-/* This is the MAIN FIX */
 .footer-content {
     display: flex;
     justify-content: space-between;
     gap: 60px;
-}
-
-.footer-column h4 {
-    margin-bottom: 14px;
-    font-size: 18px;
+    flex-wrap: wrap;
 }
 
 .footer-column p {
-    margin: 6px 0;
     font-size: 14px;
     color: #ccc;
 }
 
-
 .follow-us-bottom {
-    margin-top: 40px;
-    padding-top: 20px;
+    margin-top: 30px;
     text-align: center;
 }
-
-
 
 .social-icons {
     display: flex;
     justify-content: center;
     gap: 22px;
-    font-size:22px
+    font-size: 22px;
 }
 
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 1024px) {
+    .beds-card {
+        width: 48%;
+    }
 
+    .search-box {
+        width: 80%;
+    }
+}
 
+@media (max-width: 600px) {
+    .top-panel {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
 
+    .search-box {
+        width: 100%;
+    }
 
+    .filterBox-background {
+        padding: 60px 20px;
+    }
 
+    .filter-box {
+        width: 100%;
+    }
 
+    .filter-row {
+        flex-direction: column;
+    }
+
+    .beds-card {
+        width: 100%;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        gap: 30px;
+    }
+}
