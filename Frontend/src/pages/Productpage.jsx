@@ -1,31 +1,33 @@
 import "./ProductPage.css";
 import { FaTruck } from "react-icons/fa";
 import React, { useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
+
 
 
 function ProductPage() {
     const [quantity, setQuantity] = useState(1);
     const { state } = useLocation(); 
-    const { id } = useParams(); 
+    const { id } = useParams();
+    const navigate = useNavigate(); 
+
+    if (!state) {
+        return <p>Product not found</p>;
+    }
 
     return (
         <div className="product-page">
 
-            {/* Main product section */}
             <div className="product-container">
 
-                {/* LEFT: Image */}
                 <div className="product-image">
                     <img src={state.image} alt={state.name} />
                 </div>
 
-                {/* RIGHT: Details */}
                 <div className="product-details">
                     <h1>{state.name}</h1>
                     <p className="product-price">R{state.price}</p>
 
-                    {/* Quantity selector */}
                     <div className="quantity-box">
                         <label>Quantity</label>
                         <select
@@ -38,20 +40,31 @@ function ProductPage() {
                         </select>
                     </div>
 
-                    {/* Add to cart */}
-                    <button className="add-to-cart-btn">
+                    <button 
+                        className="add-to-cart-btn"
+                        onClick={() => 
+                            navigate("/checkout", {
+                                state: {
+                                    name: state.name,
+                                    price: state.price,
+                                    image: state.image,
+                                    quantity: quantity
+                                }
+                            })
+                        }
+
+                    >
                         Add to Cart
                     </button>
 
                     {/* Delivery info */}
                     <div className="delivery-info">
                         <FaTruck />
-                        <span>2–3 working days delivery</span>
+                        <span>2–3 Working days delivery</span>
                     </div>
                 </div>
             </div>
 
-            {/* FOOTER (reuse same structure as homepage) */}
             <footer className="footer">
                 <div className="footer-content">
                     <div className="footer-column">

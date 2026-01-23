@@ -56,14 +56,6 @@
   margin: 20px 0;
 }
 
-.checkout-quantity button {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 1px solid #ccc;
-  cursor: pointer;
-}
-
 .delete-icon {
   margin-left: auto;
   cursor: pointer;
@@ -89,3 +81,36 @@
   justify-content: center;
   gap: 8px;
 }
+
+
+.qty-box {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  overflow: hidden; 
+  height: 36px;
+}
+
+.qty-number {
+  width: 40px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.qty-btn {
+  width: 36px;
+  height: 36px;
+  background: rgb(252, 249, 249);
+  border: none;          
+  border-radius: 0;      
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+
+  justify-content: center;
+  cursor: pointer;
+}
+

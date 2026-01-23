@@ -257,7 +257,7 @@ function HomePage() {
 
                 <div className="footer-column">
                     <h4>Get In Touch</h4>
-                    <p>Email: cjnr@gmail.com</p>
+                    <p>Email: c@gmail.com</p>
                     <p>WhatsApp: 067 9567</p>
                     <p>Phone: 058 5885</p> 
                 </div>  

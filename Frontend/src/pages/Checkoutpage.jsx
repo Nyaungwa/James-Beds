@@ -1,17 +1,13 @@
-import React from "react";
-import "./CheckoutPage.css";
+import "./Checkoutpage.css";
 import { FaTrash, FaLock } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
 
 function CheckoutPage() {
-  const navigate = useNavigate();
-
-  const product = {
-    name: "Firm Single Bed Set",
-    price: 1999,
-    image: "/src/assets/Single.jpeg",
-    quantity: 1
-  };
+  const { state } = useLocation(); 
+  const { id } = useParams();
+  const navigate = useNavigate(); 
+  const [quantity, setQuantity] = useState(1);
 
   return (
     <div className="checkout-overlay">
@@ -21,19 +17,34 @@ function CheckoutPage() {
 
         {/* Product Row */}
         <div className="checkout-item">
-          <img src={product.image} alt={product.name} />
+          <img src={state.image} alt={state.name} />
 
           <div className="checkout-item-info">
-            <p className="item-name">{product.name}</p>
-            <p className="item-price">R{product.price}</p>
+            <p className="item-name">{state.name}</p>
+            <p className="item-price">R{state.price}</p>
           </div>
         </div>
 
         {/* Quantity */}
         <div className="checkout-quantity">
-          <button>-</button>
-          <span>1</span>
-          <button>+</button>
+          <div className="qty-box">
+            <button
+              className="qty-btn"
+              onClick={() => setQuantity(q => Math.max(1, q - 1))}
+            >
+              −
+            </button>
+
+            <span className="qty-number">{quantity}</span>
+
+              <button
+                className="qty-btn"
+                onClick={() => setQuantity(q => q + 1)}
+              >
+                +
+              </button>
+
+          </div>
 
           <FaTrash className="delete-icon" />
         </div>
@@ -43,13 +54,22 @@ function CheckoutPage() {
         {/* Subtotal */}
         <div className="checkout-summary">
           <span>Subtotal</span>
-          <span>R{product.price}</span>
+          <span>R{state.price}</span>
         </div>
 
         {/* Checkout Button */}
         <button
           className="checkout-btn"
-          onClick={() => navigate("/payment")}
+          onClick={() => 
+            navigate("/payment", {
+              state: {
+                name: state.name,
+                price: state.price,
+                image: state.image,
+                quantity: quantity
+              }
+            })
+          }
         >
           <FaLock /> Checkout Now
         </button>

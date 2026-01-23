@@ -1,0 +1,76 @@
+.payment-page {
+  display: flex;
+  min-height: 100vh;
+}
+
+.payment-left {
+  width: 50%;
+  background: #c5f6a6;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.payment-left h3 {
+  margin-top: 20px;
+}
+
+.payment-left input,
+.payment-left select {
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+}
+
+.payment-box {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pay-btn {
+  margin-top: 10px;
+  padding: 14px;
+  border-radius: 30px;
+  border: none;
+  background: #111;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.payment-right {
+  width: 50%;
+  padding: 50px;
+}
+
+.summary-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.summary-item img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+}
+
+.delivery {
+  margin: 20px 0;
+}
+
+.totals div {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+}
