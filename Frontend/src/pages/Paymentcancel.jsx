@@ -5,13 +5,16 @@ function PaymentCancel() {
   const navigate = useNavigate();
 
   return (
-    <div className="payment-page">
-      {/* Top panel */}
-      <div className="top-panel">
-        <h2>Payment</h2>
-      </div>
+    <div className="payment-container">
 
-      {/* Content */}
+                  <div className="payment-top-panel">
+                <div className="brand">
+                    <span className="brand-main">James</span>
+                    <br />
+                    <span className="brand-sub">Best Affordable Beds</span>
+                </div>
+            </div>
+ 
       <div className="payment-content">
         <div className="status-icon cancel">✖</div>
         <h2 className="status-title cancel">Payment Unsuccessful</h2>

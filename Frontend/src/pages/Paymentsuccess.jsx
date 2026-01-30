@@ -7,11 +7,15 @@ function PaymentSuccess() {
   const today = new Date().toLocaleDateString();
 
   return (
-    <div className="payment-page">
-      {/* Top panel */}
-      <div className="top-panel">
-        <h2>Payment</h2>
-      </div>
+    <div className="payment-container">
+    
+                 <div className="payment-top-panel">
+                <div className="brand">
+                    <span className="brand-main">James</span>
+                    <br />
+                    <span className="brand-sub">Best Affordable Beds</span>
+                </div>
+            </div>
 
       {/* Content */}
       <div className="payment-content">
