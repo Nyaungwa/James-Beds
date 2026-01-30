@@ -11,10 +11,8 @@ function HomePage() {
     return (
         <div className = "homepage-cointaner">
 
-            {/*Top panel*/}
             <div className = "top-panel">
 
-                {/* Company Name */}
                 <div className = "brand">
                     <span className="brand-main">James</span>
                 <br />

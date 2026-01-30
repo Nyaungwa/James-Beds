@@ -6,14 +6,14 @@
     flex-direction: column;
 }
 
-/* Main layout */
+
 .product-container {
     display: flex;
     min-height: auto;
     align-items: stretch;
 }
 
-/* LEFT image */
+
 .product-image {
     width: 50%;
     max-height: 600px;
@@ -27,7 +27,7 @@
     object-fit: cover;
 }
 
-/* RIGHT details */
+
 .product-details {
     width: 50%;
     padding: 80px 60px;
