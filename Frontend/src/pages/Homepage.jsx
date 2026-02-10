@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./Homepage.css";
 import {FaUser, FaShoppingCart, FaSearch, FaFacebookF, FaInstagram} from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -8,15 +8,30 @@ import { useNavigate } from "react-router-dom";
 function HomePage() {
 
     const navigate = useNavigate();
+    const [search, setSearch] = useState("");
+    const [results, setResults] = useState([]);
+    const [showSearchBar, setShowSearchBar] = useState(false);
+
+    useEffect(() => {
+        if (search.length < 2) {
+            setResults([]);
+            return;
+        }
+        fetch(`http://localhost:5000/api/products/search?q=${search}`)
+            .then(res => res.json())
+            .then(data => setResults(data));
+
+        }, [search]);
+
     return (
-        <div className = "homepage-cointaner">
+        <div className = "homepage-container">
 
             <div className = "top-panel">
 
                 <div className = "brand">
                     <span className="brand-main">James</span>
                 <br />
-                <span className="brand-sub">Best Affordable Beds</span>
+                <span className="brand-sub">Cresslawn Luxury Beds</span>
                 </div>
 
                 {/* Search Bar*/}
@@ -26,13 +41,57 @@ function HomePage() {
                         type = "text"
                         className = "search-input"
                         placeholder = "Search..."
+                        value = {search}
+                        onChange={(e) => setSearch(e.target.value)}
                         />
+
+                        {results.length > 0 && (
+                            <div className="search-results-box">
+                                {results
+                                    .filter(
+                                        (item, index, self) =>
+                                            index === self.findIndex(p => p.id === item.id)
+                                    )
+                                    .map(item => (
+                                    <div
+                                        key={item.id}
+                                        className="search-result-item"
+                                        onClick={() =>
+                                            navigate(`/product/${item.id}`, { state: item })
+                                        }
+                                    >
+                                        <img 
+                                            src={item.image} 
+                                            alt={item.name}
+                                            style={{
+                                                width: "60px",
+                                                height: "45px",
+                                                objectFit: "cover",
+                                                borderRadius: "5px"
+                                            }}
+                                        />
+                                        <div className="search-result-info">
+                                            <p>{item.name}</p>
+                                            <span>R{item.price}</span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                         <FaSearch className = "search-icon"/>
                     </div>
                 </div>
 
                 {/* Icons */}
                 <div className = "icon-selection">
+
+                    <div 
+                        className = "mobile-only-search"
+                        onClick={() => setShowSearchBar(!showSearchBar)}
+                    >
+                        <FaSearch className="mobile-icon" />
+
+                    </div>
                     {/* User */}
                     <div className = "icon-items">
                         <FaUser className = "icon" />
@@ -49,49 +108,97 @@ function HomePage() {
                     </div>
                 </div>
             </div>
+                {showSearchBar && (
+                        <div className="mobile-search-box">
+                            <input
+                                type="text"
+                                className="mobile-search-input"
+                                placeholder="Search..."
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}   
+                            />
+                            {results.length > 0 && (
+                            <div className="mobile-search-results-box">
+                                {results
+                                    .filter(
+                                        (item, index, self) =>
+                                            index === self.findIndex(p => p.id === item.id)
+                                    )
+                                    .map(item => (
+                                    <div
+                                        key={item.id}
+                                        className="mobile-search-result-item"
+                                        onClick={() =>
+                                            navigate(`/product/${item.id}`, { state: item })
+                                        }
+                                    >
+                                        <img 
+                                            src={item.image} 
+                                            alt={item.name}
+                                            style={{
+                                                width: "60px",
+                                                height: "45px",
+                                                objectFit: "cover",
+                                                borderRadius: "5px"
+                                            }}
+                                        />
+                                        <div className="mobile-search-result-info">
+                                            <p>{item.name}</p>
+                                            <span>R{item.price}</span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                            <FaSearch className="mobile-search-icon" />
+                        </div>
+                    )
+                }
                 
      
         {/* Search Beds Background */}
         <div className = "filterBox-background">
+             <div className="filterBox-content">
                 <h2 className="filter-title">Beds for Sale</h2>
                 <p className="filter-subtitle">
                     Let's see what you are comfortable with
                 </p>
+                <div className="filter-box">
+                    <div className="filter-row inline">
+                        <select className="filter-input small">
+                            <option>Type</option>
+                            <option>Bed</option>
+                            <option>Mattress</option>
+                            <option></option>
+                        </select>
 
-            <div className="filter-box">
-                <div className="filter-row inline">
-                    <select className="filter-input small">
-                        <option>Type</option>
-                        <option>Bed</option>
-                        <option>Mattress</option>
-                        <option>Headboard</option>
-                    </select>
+                        <select className="filter-input small">
+                            <option>Size</option>
+                            <option>Single</option>
+                            <option>3/4</option>
+                            <option>Double</option>
+                            <option>Queen</option>
+                            <option>King</option>
+                        </select>
 
+                        <select className="filter-input small">
+                            <option>Comfort</option>
+                            <option>Pillow Top</option>
+                            <option>Box Top</option>
+                            <option>Euro Top</option>
+                        </select>
 
-                    <select className="filter-input small">
-                        <option>Size</option>
-                        <option>Single</option>
-                        <option>Double</option>
-                        <option>Queen</option>
-                        <option>King</option>
-                    </select>
-
-                    <select className="filter-input small">
-                        <option>Comfort</option>
-                        <option>Foam</option>
-                        <option>Spring</option>
-                        <option>Hybrid</option>
-                    </select>
-                    <div className="filter-row center">
-                        <button className="filter-button small">
-                            Search
-                        </button>
-                    </div>
+                        <div className="filter-row center">
+                            <button className="filter-button small">
+                                Search
+                            </button>
+                        </div>
                     
+                    </div>
+
                 </div>
 
             </div>
-
         </div>
       
         {/*Products for sale Section*/}
@@ -99,25 +206,25 @@ function HomePage() {
         <div className = "beds-section">
             <div className = "beds-card">
                 <img
-                   src="/src/assets/Single.jpeg"
+                   src="src/assets/Double.jpeg"
                    alt = "Luxury Beds"
                    className = "bed-images"
                 />
                 <div className = "bed-info">
-                    <h3>Firm Single Bed Set</h3>
-                    <p className = "price"> R1999 </p>
+                    <h3>Pillow Top Single Bed Set</h3>
+                    <p className = "price"> R2599 </p>
                     <button className = "add-cart"
                     onClick={() =>
                         navigate("/product/1", {
                             state: {
-                                name: "Firm Single Bed Set",
-                                price: 1999,
-                                image: "/src/assets/Single.jpeg"
+                                name: "Pillow Top Single Bed Set",
+                                price: 2599,
+                                image: "src/assets/Double.jpeg"
                             }
                         })
                     }                  
 
-                    > Add to Cart 
+                    > View Product 
                     </button>    
                 </div>                
             </div>
@@ -129,7 +236,7 @@ function HomePage() {
                    className = "bed-images"
                 />
                 <div className = "bed-info">
-                    <h3>Firm Double Bed Set</h3>
+                    <h3>Box Top Double Bed Set</h3>
                     <p className = "price"> R2999 </p>
                     <button className = "add-cart"
                     onClick={() =>
@@ -290,4 +397,3 @@ function HomePage() {
     );
 }
 export default HomePage;
-

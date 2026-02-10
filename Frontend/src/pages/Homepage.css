@@ -1,19 +1,20 @@
-
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    min-width: 0;
 }
 
 body {
     font-family: 'Inter', sans-serif;
     background-color: #fff;
+    width: 100%;
 }
 
 /* =========================
    HOMEPAGE CONTAINER
 ========================= */
-.homepage-cointaner {
+.homepage-container {
     width: 100%;
     min-height: 100vh;
 }
@@ -27,31 +28,36 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #c5f6a6;
+    background: black;
     padding: 15px 25px;
 }
 
-/* Brand */
+/* =========================
+   COMPANY NAME
+========================= */
 .brand {
     display: flex;
     flex-direction: column;
     line-height: 1.1;
+    align-items: flex-start;
 }
 
 .brand-main {
     font-family: 'Playfair Display', serif;
     font-size: 2.4rem;
     font-weight: 700;
-    color: white;
+    color: rgb(236, 225, 225);
+    width: auto;
 }
 
 .brand-sub {
     font-size: 0.9rem;
-    color: white;
+    color: rgb(236, 225, 225);
+    font-family: 'Manrope', serif;
 }
 
 /* =========================
-   SEARCH
+   SEARCH BAR && SEARCH ICON 
 ========================= */
 .search-selection {
     flex: 1;
@@ -79,11 +85,80 @@ body {
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
+    color: #ccc;
+}
+
+.search-results-box {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-top: 6px;
+    z-index: 100;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.search-result-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+}
+
+.search-result-item:hover {
+    background-color: #f5f5f5;
+}
+
+.search-result-item img {
+    width: 60px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.search-result-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.search-result-info p {
+    margin: 0;
+    font-weight: bold;
+    font-size: 14px;
+    color: black;
+}
+
+.search-result-info span {
+    font-size: 13px;
+    color: black;
+}
+
+.mobile-icon {
+    display: none;
+}
+
+.mobile-search-box {
+    display: none;
 }
 
 /* =========================
    ICONS
 ========================= */
+.icon {
+    font-size: 28px;   
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    color: #ccc;
+}
+
 .icon-selection {
     display: flex;
     gap: 20px;
@@ -91,10 +166,8 @@ body {
 
 .icon-items {
     display: flex;
-    align-items: center;
     gap: 6px;
     cursor: pointer;
-    position: relative;
 }
 
 .icon-text {
@@ -117,17 +190,23 @@ body {
     border-radius: 50%;
 }
 
-/* =========================
-   HERO / FILTER SECTION
-========================= */
+/* ============
+FILTER SECTION
+===============*/
 .filterBox-background {
     width: 100%;
     min-height: 100vh;
     background: url("../assets/elegant-rendering-interior-design.jpg") center/cover no-repeat;
-    padding: 80px 8%;
+    padding: 80px 0;
 }
 
-/* Titles OUTSIDE the box */
+.filterBox-content {
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 25px;
+}
+
 .filter-title {
     font-family: 'Playfair Display', serif;
     font-size: 2.2rem;
@@ -140,7 +219,6 @@ body {
     margin-bottom: 30px;
 }
 
-/* Filter box */
 .filter-box {
     max-width: 480px;
     background: white;
@@ -151,17 +229,15 @@ body {
     gap: 16px;
 }
 
-/* Rows */
 .filter-row {
     display: flex;
     gap: 12px;
 }
+
 .filter-row.center {
     justify-content: center;
 }
 
-
-/* Inputs + button same size */
 .filter-input.small,
 .filter-button {
     flex: 1;
@@ -178,27 +254,31 @@ body {
     cursor: pointer;
 }
 
-
 /* =========================
    PRODUCTS
 ========================= */
 .beds-section-name {
     font-family: 'Playfair Display', serif;
     font-size: 2rem;
-    margin: 40px;
+    margin: 40px 0 20px 0;
+    padding: 0 25px;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .beds-section,
 .mattress-section {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 30px;
-    padding: 0 40px 40px;
-    flex-wrap: wrap;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 25px;
 }
 
-/* Reusable card */
 .beds-card {
-    width: 23%;
+    width: 100%;
     background: white;
     border-radius: 14px;
     box-shadow: 0 12px 30px rgba(0,0,0,0.15);
@@ -232,9 +312,9 @@ body {
     cursor: pointer;
 }
 
-/* =========================
-   FOOTER
-========================= */
+/* ==============
+   FOOTER SECTION
+================= */
 .footer {
     background-color: #111;
     color: white;
@@ -266,47 +346,124 @@ body {
 }
 
 /* =========================
-   RESPONSIVE
+   MOBILE TOP PANEL DESIGN
 ========================= */
-@media (max-width: 1024px) {
-    .beds-card {
-        width: 48%;
-    }
-
-    .search-box {
-        width: 80%;
-    }
-}
-
 @media (max-width: 600px) {
-    .top-panel {
-        flex-direction: column;
+
+    /* ===============
+    MOBILE SEARCH BAR
+    ==================*/
+    .mobile-search-box {
+        width: 100%;
+        padding: 10px 15px;
+        background-color: black;
+        display: flex;
+        justify-content: center;
+        position: relative;
+    }
+
+    .mobile-search-input {
+        width: 80%;
+        height: 44px;
+        padding: 0 15px;
+        border-radius: 25px;
+        border: none;
+        outline: none;
+    }
+
+    .mobile-icon {
+        font-size: 28px;   
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        color: #ccc;
+        stroke-width: 1.0;
+    }
+
+    .mobile-search-icon{
+        position: absolute;
+        right: 80px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #ccc;
+    }
+
+    .mobile-search-results-box {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80%;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        margin-top: 6px;
+        z-index: 9999;
+        max-height: 300px;
+        overflow-y: auto;
+        
+    }
+
+    .mobile-search-result-item {
+        display: flex;
+        align-items: center;
         gap: 10px;
-        text-align: center;
+        padding: 8px;
+        border-bottom: 1px solid #eee;
+        cursor: pointer;
     }
 
-    .search-box {
-        width: 100%;
+    .mobile-search-result-item:hover {
+        background-color: #f5f5f5;
     }
 
-    .filterBox-background {
-        padding: 60px 20px;
+    .mobile-search-result-item img {
+        width: 60px;
+        height: 45px;
+        object-fit: cover;
+        border-radius: 5px;
     }
 
-    .filter-box {
-        width: 100%;
-    }
-
-    .filter-row {
+    .mobile-search-result-info {
+        display: flex;
         flex-direction: column;
+        align-items: flex-start;
     }
 
-    .beds-card {
-        width: 100%;
+    .mobile-search-result-info p {
+        margin: 0;
+        font-weight: bold;
+        font-size: 14px;
+        color: black;
     }
 
-    .footer-content {
-        flex-direction: column;
-        gap: 30px;
+    .mobile-search-result-info span {
+        font-size: 13px;
+        color: black;
     }
+
+
+    .search-selection {
+        display: none;
+    }
+
+    .mobile-only-search {
+        display: flex;
+        align-items: center;
+    }
+
+    .icon-text {
+        display: none;
+    }
+
+    .top-panel {
+        flex-direction: row;
+        padding: 10px 15px;
+    }
+
+    .icon-selection {
+        gap: 15px;
+    }
+
 }

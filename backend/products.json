@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "Box Top Queen Bed Set",
+    "type": "bed",
+    "size": "queen",
+    "price": 3999,
+    "image": "src/assets/Double.jpeg"
+  },
+  {
+    "id": 2,
+    "name": "Pillow Top Double Bed Set",
+    "type": "bed",
+    "size": "double",
+    "price": 2999,
+    "image": "src/assets/Double.jpeg"
+  },
+  {
+    "id": 3,
+    "name": "Euro Top King Bed Set",
+    "type": "bed",
+    "size": "king",
+    "price": 5999,
+    "image": "src/assets/Double.jpeg"
+  }
+]

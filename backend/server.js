@@ -1,7 +1,9 @@
+
 require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
+const products = require("./products.json");
 
 const app = express();
 
@@ -50,3 +52,25 @@ const PORT = 5000;
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
+
+
+/* ======================
+   Search Route
+====================== */
+app.get("/api/products/search", (req, res) => {
+      const query = req.query.q?.toLowerCase();
+
+      if (!query) return res.json([]);
+
+      const results = products.filter(product =>
+        product.name.toLowerCase().includes(query) ||
+        product.size.toLowerCase().includes(query)
+      );
+
+      res.json(results);
+        
+});
+
+
+      
+
