@@ -17,7 +17,7 @@ function HomePage() {
             setResults([]);
             return;
         }
-        fetch(`http://localhost:5000/api/products/search?q=${search}`)
+        fetch(`/api/products/search?q=${search}`)
             .then(res => res.json())
             .then(data => setResults(data));
 
