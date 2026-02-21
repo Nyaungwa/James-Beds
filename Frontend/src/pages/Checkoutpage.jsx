@@ -1,81 +1,133 @@
-import "./Checkoutpage.css";
-import { FaTrash, FaLock } from "react-icons/fa";
+import "./CheckoutPage.css";
+import { FaTrash, FaLock, FaArrowLeft } from "react-icons/fa";
 import React, { useState } from "react";
-import { useLocation, useParams, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function CheckoutPage() {
-  const { state } = useLocation(); 
-  const { id } = useParams();
-  const navigate = useNavigate(); 
-  const [quantity, setQuantity] = useState(1);
 
-  return (
-    <div className="checkout-overlay">
-      <div className="checkout-panel">
+    const { state } = useLocation();
+    const navigate = useNavigate();
 
-        <h3 className="checkout-title">Your Cart</h3>
+    const [quantity, setQuantity] = useState(state?.quantity || 1);
 
-        {/* Product Row */}
-        <div className="checkout-item">
-          <img src={state.image} alt={state.name} />
+    if (!state) {
+        return <p className="checkout-empty">No product in cart.</p>;
+    }
 
-          <div className="checkout-item-info">
-            <p className="item-name">{state.name}</p>
-            <p className="item-price">R{state.price}</p>
-          </div>
+    const subtotal = state.price * quantity;
+    const deliveryFee = 0;
+    const total = subtotal + deliveryFee;
+
+    return (
+        
+        <div className="checkout-page">
+
+            {/* Header */}
+            <div className="checkout-header">
+                <button
+                    className="back-btn"
+                    onClick={() => navigate(-1)}
+                >
+                    <FaArrowLeft /> Continue Shopping
+                </button>
+                <h2>Checkout</h2>
+            </div>
+
+            <div className="checkout-container">
+
+                {/* LEFT SIDE – CART ITEMS */}
+                <div className="checkout-items">
+
+                    <div className="checkout-item">
+
+                        <img
+                            src={state.image}
+                            alt={state.name}
+                            className="item-image"
+                        />
+
+                        <div className="item-info">
+                            <h3>{state.name}</h3>
+                            <p className="item-price">R{state.price}</p>
+
+                            <div className="quantity-controls">
+
+                                <button
+                                    onClick={() =>
+                                        setQuantity(q => Math.max(1, q - 1))
+                                    }
+                                >
+                                    −
+                                </button>
+
+                                <span>{quantity}</span>
+
+                                <button
+                                    onClick={() =>
+                                        setQuantity(q => q + 1)
+                                    }
+                                >
+                                    +
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        <div className="item-total">
+                            <p>R{subtotal}</p>
+                            <FaTrash className="delete-icon" />
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {/* RIGHT SIDE – SUMMARY */}
+                <div className="checkout-summary">
+
+                    <h3>Order Summary</h3>
+
+                    <div className="summary-row">
+                        <span>Subtotal</span>
+                        <span>R{subtotal}</span>
+                    </div>
+
+                    <div className="summary-row">
+                        <span>Delivery</span>
+                        <span>{deliveryFee === 0 ? "Free" : `R${deliveryFee}`}</span>
+                    </div>
+
+                    <hr />
+
+                    <div className="summary-row total-row">
+                        <span>Total</span>
+                        <span>R{total}</span>
+                    </div>
+
+                    <button
+                        className="checkout-btn"
+                        onClick={() => navigate("/payment", {
+                            state: {
+                                ...state,
+                                quantity,
+                                total
+                            }
+                        })}
+                    >
+                        <FaLock /> Secure Checkout
+                    </button>
+
+                    <p className="secure-note">
+                        Your payment information is processed securely.
+                    </p>
+
+                </div>
+
+            </div>
+
         </div>
-
-        {/* Quantity */}
-        <div className="checkout-quantity">
-          <div className="qty-box">
-            <button
-              className="qty-btn"
-              onClick={() => setQuantity(q => Math.max(1, q - 1))}
-            >
-              −
-            </button>
-
-            <span className="qty-number">{quantity}</span>
-
-              <button
-                className="qty-btn"
-                onClick={() => setQuantity(q => q + 1)}
-              >
-                +
-              </button>
-
-          </div>
-
-          <FaTrash className="delete-icon" />
-        </div>
-
-        <hr />
-
-        {/* Subtotal */}
-        <div className="checkout-summary">
-          <span>Subtotal</span>
-          <span>R{state.price}</span>
-        </div>
-
-        {/* Checkout Button */}
-        <button
-          className="checkout-btn"
-          onClick={() => 
-            navigate("/payment", {
-              state: {
-                name: state.name,
-                price: state.price,
-                image: state.image,
-                quantity: quantity
-              }
-            })
-          }
-        >
-          <FaLock /> Checkout Now
-        </button>
-      </div>
-    </div>
-  );
+    );
 }
 
 export default CheckoutPage;

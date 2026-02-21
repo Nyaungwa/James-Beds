@@ -11,6 +11,23 @@ function HomePage() {
     const [search, setSearch] = useState("");
     const [results, setResults] = useState([]);
     const [showSearchBar, setShowSearchBar] = useState(false);
+    const [type, setType] = useState("");
+    const [size, setSize] = useState("");
+    const [comfort, setComfort] = useState("");
+    const [filteredProducts, setFilteredProducts] = useState([]);
+    const [hasSearched, setHasSearched] = useState(false);
+
+
+    const handleFilterSearch = () => {
+        fetch(`/api/products/filter?type=${type}&size=${size}&comfort=${comfort}`)
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                setFilteredProducts(data);
+                setHasSearched(true);
+            })
+            .catch(err => console.error(err));
+    };
 
     useEffect(() => {
         if (search.length < 2) {
@@ -165,31 +182,45 @@ function HomePage() {
                 </p>
                 <div className="filter-box">
                     <div className="filter-row inline">
-                        <select className="filter-input small">
-                            <option>Type</option>
-                            <option>Bed</option>
-                            <option>Mattress</option>
-                            <option></option>
+                        <select 
+                            className="filter-input small"
+                            value={type}
+                            onChange={(e) => setType(e.target.value)}
+                        >
+                            <option value="">Type</option>
+                            <option value="bed">Bed</option>
+                            <option value="mattress">Mattress</option>
                         </select>
 
-                        <select className="filter-input small">
-                            <option>Size</option>
-                            <option>Single</option>
-                            <option>3/4</option>
-                            <option>Double</option>
-                            <option>Queen</option>
-                            <option>King</option>
+                        <select 
+                            className="filter-input small"
+                            value={size}
+                            onChange={(e) => setSize(e.target.value)}
+                        >
+                            <option value ="">Size</option>
+                            <option value ="single">Single</option>
+                            <option value ="3/4">3/4</option>
+                            <option value ="double">Double</option>
+                            <option value = "queen">Queen</option>
+                            <option value = "king">King</option>
                         </select>
 
-                        <select className="filter-input small">
-                            <option>Comfort</option>
-                            <option>Pillow Top</option>
-                            <option>Box Top</option>
-                            <option>Euro Top</option>
+                         <select 
+                            className="filter-input small"
+                            value={comfort}
+                            onChange={(e) => setComfort(e.target.value)}
+                        >
+                            <option value="">Comfort</option>
+                            <option value= "Pillow Top">Pillow Top</option>
+                            <option value ="Box Top">Box Top</option>
+                            <option value = "Euro Top">Euro Top</option>
                         </select>
 
                         <div className="filter-row center">
-                            <button className="filter-button small">
+                            <button 
+                                className="filter-button small"
+                                onClick={handleFilterSearch}
+                            >
                                 Search
                             </button>
                         </div>
@@ -202,7 +233,29 @@ function HomePage() {
         </div>
       
         {/*Products for sale Section*/}
-        <h2 className ="beds-section-name">Beds for sale</h2>
+        <h2 className="beds-section-name">Beds for sale</h2>
+        {hasSearched ? (
+            <div className="beds-section">
+                {filteredProducts.length > 0 ? (
+                    filteredProducts.map(product => (
+                        <div key={product.id} className="beds-card">
+                            <img
+                                src={product.image}
+                                alt={product.name}
+                                className="bed-images"
+                            />
+                            <div className="bed-info">
+                                <h3>{product.name}</h3>
+                                <p className="price">R{product.price}</p>
+                            </div>
+                        </div>
+                    ))
+                    ) : (
+                        <p>No products found</p>
+                )}
+            </div>
+        ) : (
+                    
         <div className = "beds-section">
             <div className = "beds-card">
                 <img
@@ -248,7 +301,7 @@ function HomePage() {
                             }
                         })
                     }            
-                    >Add to Cart
+                    >View Product 
                     </button>    
                 </div>                
             </div>
@@ -272,7 +325,7 @@ function HomePage() {
                             }
                         })
                     }            
-                    >Add to Cart
+                    >View Product 
                     </button>    
                 </div>                
             </div>
@@ -296,11 +349,11 @@ function HomePage() {
                             }
                         })
                     }            
-                    >Add to Cart
+                    >View Product 
                     </button>    
                 </div>                
             </div>
-        </div>
+        </div>)}
         <h2 className ="beds-section-name">Mattress for sale</h2>
 
         <div className= "mattress-section">
@@ -313,7 +366,7 @@ function HomePage() {
                 <div className = "bed-info">
                     <h3>Single Mattress</h3>
                     <p className = "price"> R2999 </p>
-                    <button className = "add-cart">Add to Cart</button>    
+                    <button className = "add-cart">View Product </button>    
                 </div>                
             </div>
 
@@ -326,7 +379,7 @@ function HomePage() {
                 <div className = "bed-info">
                     <h3>Double Mattress</h3>
                     <p className = "price"> R3999 </p>
-                    <button className = "add-cart">Add to Cart</button>    
+                    <button className = "add-cart">View Product </button>    
                 </div>                
             </div>
 
@@ -339,7 +392,7 @@ function HomePage() {
                 <div className = "bed-info">
                     <h3>Queen Mattress</h3>
                     <p className = "price"> R4999 </p>
-                    <button className = "add-cart">Add to Cart</button>    
+                    <button className = "add-cart">View Product </button>    
                 </div>                
             </div>
 
@@ -352,7 +405,7 @@ function HomePage() {
                 <div className = "bed-info">
                     <h3>Firm King bed set</h3>
                     <p className = "price"> R10999 </p>
-                    <button className = "add-cart">Add to Cart</button>    
+                    <button className = "add-cart">View Product </button>    
                 </div>                
             </div>
         </div>
