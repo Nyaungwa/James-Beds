@@ -5,6 +5,7 @@
     "type": "bed",
     "size": "queen",
     "price": 3999,
+    "comfort": "Box Top",
     "image": "src/assets/Double.jpeg"
   },
   {
@@ -13,6 +14,7 @@
     "type": "bed",
     "size": "double",
     "price": 2999,
+    "comfort": "Pillow Top",
     "image": "src/assets/Double.jpeg"
   },
   {
@@ -21,6 +23,7 @@
     "type": "bed",
     "size": "king",
     "price": 5999,
+    "comfort": "Euro Top",
     "image": "src/assets/Double.jpeg"
   }
 ]

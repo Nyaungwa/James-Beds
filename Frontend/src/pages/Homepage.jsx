@@ -231,221 +231,227 @@ function HomePage() {
 
             </div>
         </div>
-      
-        {/*Products for sale Section*/}
-        <h2 className="beds-section-name">Beds for sale</h2>
-        {hasSearched ? (
-            <div className="beds-section">
-                {filteredProducts.length > 0 ? (
-                    filteredProducts.map(product => (
-                        <div key={product.id} className="beds-card">
-                            <img
-                                src={product.image}
-                                alt={product.name}
-                                className="bed-images"
-                            />
-                            <div className="bed-info">
-                                <h3>{product.name}</h3>
-                                <p className="price">R{product.price}</p>
-                            </div>
-                        </div>
-                    ))
-                    ) : (
-                        <p>No products found</p>
-                )}
-            </div>
-        ) : (
-                    
-        <div className = "beds-section">
-            <div className = "beds-card">
-                <img
-                   src="src/assets/Double.jpeg"
-                   alt = "Luxury Beds"
-                   className = "bed-images"
-                />
-                <div className = "bed-info">
-                    <h3>Pillow Top Single Bed Set</h3>
-                    <p className = "price"> R2599 </p>
-                    <button className = "add-cart"
-                    onClick={() =>
-                        navigate("/product/1", {
-                            state: {
-                                name: "Pillow Top Single Bed Set",
-                                price: 2599,
-                                image: "src/assets/Double.jpeg"
-                            }
-                        })
-                    }                  
+        {/* ================= PRODUCTS FOR SALE SECTION ================= */}
 
-                    > View Product 
-                    </button>    
-                </div>                
-            </div>
+<h2 className="beds-section-name">Beds for Sale</h2>
 
-            <div className = "beds-card">
-                <img
-                   src="/src/assets/Double.jpeg"
-                   alt = "Luxury Beds"
-                   className = "bed-images"
-                />
-                <div className = "bed-info">
-                    <h3>Box Top Double Bed Set</h3>
-                    <p className = "price"> R2999 </p>
-                    <button className = "add-cart"
-                    onClick={() =>
-                        navigate("/product/2", {
-                            state: {
-                                name: "Firm Double Bed Set",
-                                price: 2999,
-                                image: "/src/assets/Double.jpeg"
-                            }
-                        })
-                    }            
-                    >View Product 
-                    </button>    
-                </div>                
-            </div>
+{hasSearched ? (
+  <div className="beds-section">
+    {filteredProducts.length > 0 ? (
+      filteredProducts.map((product) => {
+        const oldPrice = product.oldPrice || product.price + 800;
+        const discountPercent = Math.round(
+          ((oldPrice - product.price) / oldPrice) * 100
+        );
 
-            <div className = "beds-card">
-                <img
-                   src="/src/assets/Queen.jpeg"
-                   alt = "Luxury Beds"
-                   className = "bed-images"
-                />
-                <div className = "bed-info">
-                    <h3>Firm Queen bed set</h3>
-                    <p className = "price"> R3999 </p>
-                    <button className = "add-cart"
-                    onClick={() =>
-                        navigate("/product/3", {
-                            state: {
-                                name: "Firm Queen bed set",
-                                price: 3999,
-                                image: "/src/assets/Queen.jpeg"
-                            }
-                        })
-                    }            
-                    >View Product 
-                    </button>    
-                </div>                
+        return (
+          <div key={product.id} className="beds-card">
+            <div className="discount-badge">-{discountPercent}%</div>
+
+            <img
+              src={product.image}
+              alt={product.name}
+              className="bed-images"
+            />
+
+            <div className="bed-info">
+              <h3>{product.name}</h3>
+
+              <div className="price-container">
+                <span className="old-price">R{oldPrice}</span>
+                <span className="new-price">R{product.price}</span>
+              </div>
+            </div>
+          </div>
+        );
+      })
+    ) : (
+      <p>No products found</p>
+    )}
+  </div>
+) : (
+  <div className="beds-section">
+    {[
+      {
+        id: 1,
+        name: "Pillow Top Single Bed Set",
+        price: 2599,
+        oldPrice: 3299,
+        image: "src/assets/Double.jpeg",
+      },
+      {
+        id: 2,
+        name: "Box Top Double Bed Set",
+        price: 2999,
+        oldPrice: 3799,
+        image: "/src/assets/Double.jpeg",
+      },
+      {
+        id: 3,
+        name: "Firm Queen Bed Set",
+        price: 3999,
+        oldPrice: 4899,
+        image: "/src/assets/Queen.jpeg",
+      },
+      {
+        id: 4,
+        name: "Firm King Bed Set",
+        price: 5999,
+        oldPrice: 7299,
+        image: "/src/assets/King.jpeg",
+      },
+    ].map((product) => {
+      const discountPercent = Math.round(
+        ((product.oldPrice - product.price) / product.oldPrice) * 100
+      );
+
+      return (
+        <div key={product.id} className="beds-card">
+          <div className="discount-badge">-{discountPercent}%</div>
+
+          <img
+            src={product.image}
+            alt={product.name}
+            className="bed-images"
+          />
+
+          <div className="bed-info">
+            <h3>{product.name}</h3>
+
+            <div className="price-container">
+              <span className="old-price">R{product.oldPrice}</span>
+              <span className="new-price">R{product.price}</span>
             </div>
 
-            <div className = "beds-card">
-                <img
-                   src="/src/assets/King.jpeg"
-                   alt = "Luxury Beds"
-                   className = "bed-images"
-                />
-                <div className = "bed-info">
-                    <h3>Firm King bed set</h3>
-                    <p className = "price"> R5999 </p>
-                    <button className = "add-cart"
-                    onClick={() =>
-                        navigate("/product/4", {
-                            state: {
-                                name: "Firm King bed set",
-                                price: 5999,
-                                image: "/src/assets/King.jpeg"
-                            }
-                        })
-                    }            
-                    >View Product 
-                    </button>    
-                </div>                
-            </div>
-        </div>)}
-        <h2 className ="beds-section-name">Mattress for sale</h2>
-
-        <div className= "mattress-section">
-            <div className = "beds-card">
-                <img
-                   src="/src/assets/Strandmattress-Graduate-Duo-Mattress.jpg.webp"
-                   alt = "Luxury mattresses"
-                   className = "beds-images"
-                />
-                <div className = "bed-info">
-                    <h3>Single Mattress</h3>
-                    <p className = "price"> R2999 </p>
-                    <button className = "add-cart">View Product </button>    
-                </div>                
-            </div>
-
-            <div className = "beds-card">
-                <img
-                   src="/src/assets/Strandmattress-Graduate-Lux-Mattress.jpg.webp"
-                   alt = "Luxury Beds"
-                   className = "bed-images"
-                />
-                <div className = "bed-info">
-                    <h3>Double Mattress</h3>
-                    <p className = "price"> R3999 </p>
-                    <button className = "add-cart">View Product </button>    
-                </div>                
-            </div>
-
-            <div className = "beds-card">
-                <img
-                   src="/src/assets/Weightmaster-Mattress.jpg.webp"
-                   alt = "Luxury Beds"
-                   className = "bed-images"
-                />
-                <div className = "bed-info">
-                    <h3>Queen Mattress</h3>
-                    <p className = "price"> R4999 </p>
-                    <button className = "add-cart">View Product </button>    
-                </div>                
-            </div>
-
-            <div className = "beds-card">
-                <img
-                   src="/src/assets/Sealy_Lannister_Extra_Firm_Mattress-1.jpg.webp"
-                   alt = "Luxury Beds"
-                   className = "bed-images"
-                />
-                <div className = "bed-info">
-                    <h3>Firm King bed set</h3>
-                    <p className = "price"> R10999 </p>
-                    <button className = "add-cart">View Product </button>    
-                </div>                
-            </div>
+            <button
+              className="add-cart"
+              onClick={() =>
+                navigate(`/product/${product.id}`, { state: product })
+              }
+            >
+              View Product
+            </button>
+          </div>
         </div>
+      );
+    })}
+  </div>
+)}
 
-        <footer className="footer">
-            <div className="footer-content">
+{/* ================= MATTRESS SECTION ================= */}
 
-                <div className="footer-column">
-                    <h4>Get In Touch</h4>
-                    <p>Email: c@gmail.com</p>
-                    <p>WhatsApp: 067 9567</p>
-                    <p>Phone: 058 5885</p> 
-                </div>  
+<h2 className="beds-section-name">Mattresses for Sale</h2>
 
-                <div className="footer-column">
-                    <h4>Product</h4>
-                    <p>Beds</p>
-                    <p>Mattresses</p>
-                    <p>Headboards</p>
-                </div>
+<div className="mattress-section">
+  {[
+    {
+      id: 5,
+      name: "Single Mattress",
+      price: 2999,
+      oldPrice: 3599,
+      image:
+        "/src/assets/Strandmattress-Graduate-Duo-Mattress.jpg.webp",
+    },
+    {
+      id: 6,
+      name: "Double Mattress",
+      price: 3999,
+      oldPrice: 4699,
+      image:
+        "/src/assets/Strandmattress-Graduate-Lux-Mattress.jpg.webp",
+    },
+    {
+      id: 7,
+      name: "Queen Mattress",
+      price: 4999,
+      oldPrice: 5799,
+      image: "/src/assets/Weightmaster-Mattress.jpg.webp",
+    },
+    {
+      id: 8,
+      name: "King Mattress",
+      price: 10999,
+      oldPrice: 12499,
+      image:
+        "/src/assets/Sealy_Lannister_Extra_Firm_Mattress-1.jpg.webp",
+    },
+  ].map((product) => {
+    const discountPercent = Math.round(
+      ((product.oldPrice - product.price) / product.oldPrice) * 100
+    );
 
-                <div className="footer-column">
-                    <h4>Company Info</h4>
-                    <p>Terms & Conditions</p>
-                    <p>Privacy Policy</p>
-                    <p>Contact Us</p>
-                </div>
-             </div>
+    return (
+      <div key={product.id} className="beds-card">
+        <div className="discount-badge">-{discountPercent}%</div>
 
-            <div className="follow-us-bottom">
-                <h4>Follow Us</h4>
-                
-                <div className="social-icons">
-                    <div className="icon-items">
-                        <FaFacebookF className="icon" />
-                        <FaInstagram className="icon" />
-                    </div>
-                </div>
-            </div>
-        </footer>
+        <img
+          src={product.image}
+          alt={product.name}
+          className="bed-images"
+        />
+
+        <div className="bed-info">
+          <h3>{product.name}</h3>
+
+          <div className="price-container">
+            <span className="old-price">R{product.oldPrice}</span>
+            <span className="new-price">R{product.price}</span>
+          </div>
+
+          <button
+            className="add-cart"
+            onClick={() =>
+              navigate(`/product/${product.id}`, { state: product })
+            }
+          >
+            View Product
+          </button>
+        </div>
+      </div>
+    );
+  })}
+</div>
+
+{/* ================= PROFESSIONAL FOOTER ================= */}
+
+<footer className="footer premium-footer">
+  <div className="footer-content">
+
+    <div className="footer-column">
+      <h4>Get In Touch</h4>
+      <p>Email: support@jamescresslawn.co.za</p>
+      <p>WhatsApp: 067 956 0000</p>
+      <p>Phone: 058 588 5000</p>
+    </div>
+
+    <div className="footer-column">
+      <h4>Products</h4>
+      <p>Beds</p>
+      <p>Mattresses</p>
+      <p>Headboards</p>
+    </div>
+
+    <div className="footer-column">
+      <h4>Company</h4>
+      <p>Terms & Conditions</p>
+      <p>Privacy Policy</p>
+      <p>Returns Policy</p>
+    </div>
+
+    <div className="footer-column">
+      <h4>Follow Us</h4>
+      <div className="social-icons">
+        <FaFacebookF className="icon" />
+        <FaInstagram className="icon" />
+      </div>
+    </div>
+
+  </div>
+
+  <div className="footer-bottom">
+    © {new Date().getFullYear()} James Cresslawn Luxury Beds. All rights reserved.
+  </div>
+</footer>
     </div>
     );
 }

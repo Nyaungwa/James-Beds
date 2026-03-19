@@ -313,6 +313,64 @@ FILTER SECTION
     cursor: pointer;
 }
 
+.price-container {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.old-price {
+  color: #d32f2f;
+  text-decoration: line-through;
+  font-weight: 500;
+}
+
+.new-price {
+  color: #2e7d32;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.discount-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: #d32f2f;
+  color: white;
+  padding: 6px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 6px;
+}
+
+.beds-card {
+  position: relative;
+}
+
+.premium-footer {
+  background: #000;
+  color: #fff;
+  padding: 50px 80px 20px;
+  margin-top: 60px;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.footer-column h4 {
+  margin-bottom: 12px;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
 /* ==============
    FOOTER SECTION
 ================= */

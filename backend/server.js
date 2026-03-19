@@ -58,18 +58,52 @@ app.listen(PORT, () => {
    Search Route
 ====================== */
 app.get("/api/products/search", (req, res) => {
-      const query = req.query.q?.toLowerCase();
+    const { q, type, size, comfort } = req.query;
 
-      if (!query) return res.json([]);
+    let results = products;
 
-      const results = products.filter(product =>
-        product.name.toLowerCase().includes(query) ||
-        product.size.toLowerCase().includes(query)
-      );
+    if (q) {
+        results = results.filter(product =>
+            product.name.toLowerCase().includes(q.toLowerCase())
+        );
+    }
 
-      res.json(results);
-        
+    if (type) {
+        results = results.filter(product =>
+            product.type.toLowerCase() === type.toLowerCase()
+        );
+    }
+
+    if (size) {
+        results = results.filter(product =>
+            product.size.toLowerCase() === size.toLowerCase()
+        );
+    }
+
+    if (comfort) {
+        results = results.filter(product =>
+            product.comfort.toLowerCase() === comfort.toLowerCase()
+        );
+    }
+
+    res.json(results);
 });
+
+app.get("/api/products/filter", (req, res) => {
+    const { type, size, comfort } = req.query;
+
+    const results = products.filter(product =>
+        (!type || product.type.toLowerCase() === type.toLowerCase()) &&
+        (!size || product.size.toLowerCase() === size.toLowerCase()) &&
+        (!comfort || product.comfort.toLowerCase() === comfort.toLowerCase())
+    );
+
+    res.json(results);
+});
+
+
+
+
 
 
       
