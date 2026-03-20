@@ -5,30 +5,40 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-@Entity                          // Tells Hibernate: "make a database table for this class"
-@Table(name = "users")           // The table will be named "users" in PostgreSQL
-@Getter                          // Lombok: auto-generates all getters
-@Setter                          // Lombok: auto-generates all setters
-@NoArgsConstructor               // Lombok: auto-generates empty constructor (JPA requires this)
-@AllArgsConstructor              // Lombok: auto-generates constructor with all fields
-@Builder                         // Lombok: lets you build objects like User.builder().email("...").build()
-public class User {
+@Entity
+@Table(name = "users")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+/*
+ * UserDetails is a Spring Security interface.
+ * By implementing it, Spring Security knows how to use this class
+ * for authentication — it knows where to find the password,
+ * the username, and the user's roles/permissions.
+ */
+public class User implements UserDetails {
 
-    @Id                                           // This field is the primary key
-    @GeneratedValue(strategy = GenerationType.UUID) // PostgreSQL auto-generates a UUID for each new user
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(nullable = false, unique = true)      // email column: required + must be unique
-    @Email                                        // Validates email format
+    @Column(nullable = false, unique = true)
+    @Email
     @NotBlank
     private String email;
 
-    @Column(name = "password_hash", nullable = false) // We never store plain passwords - always hashed
+    @Column(name = "password_hash", nullable = false)
     @NotBlank
     private String passwordHash;
 
@@ -39,24 +49,15 @@ public class User {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    // A user can have one of two roles: USER or ADMIN
-    // @Enumerated stores the text name ("USER", "ADMIN") not a number
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     @Builder.Default
-    private Role role = Role.USER;               // Default role when a user registers is USER
+    private Role role = Role.USER;
 
-    @CreationTimestamp                           // Hibernate automatically sets this when the record is created
+    @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    // ------------------------------------------------
-    // RELATIONSHIPS
-    // One user can have many orders (OneToMany)
-    // "mappedBy = user" means the Order entity owns this relationship (has the foreign key)
-    // CascadeType.ALL = if you delete a user, their orders are also deleted
-    // FetchType.LAZY = don't load orders from DB unless you explicitly ask for them (better performance)
-    // ------------------------------------------------
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
     private List<Order> orders = new ArrayList<>();
@@ -65,9 +66,57 @@ public class User {
     @Builder.Default
     private List<CartItem> cartItems = new ArrayList<>();
 
-    // Enum defined inside the User class since it only belongs to User
+    // -----------------------------------------------
+    // UserDetails interface methods
+    // Spring Security calls these to check the user
+    // -----------------------------------------------
+
+    /**
+     * Returns the user's permissions/roles.
+     * We give each user a single role: ROLE_USER or ROLE_ADMIN.
+     * Spring Security expects role names to start with "ROLE_".
+     */
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
+    }
+
+    /**
+     * Spring Security calls this to get the password for verification.
+     * We return passwordHash because we stored the hashed version.
+     */
+    @Override
+    public String getPassword() {
+        return passwordHash;
+    }
+
+    /**
+     * Spring Security uses this as the unique identifier (username).
+     * We use email instead of a username field.
+     */
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    /**
+     * These four methods control account status.
+     * Return true for all = account is active with no restrictions.
+     * You can add logic here later (e.g. email verification, banning users).
+     */
+    @Override
+    public boolean isAccountNonExpired() { return true; }
+
+    @Override
+    public boolean isAccountNonLocked() { return true; }
+
+    @Override
+    public boolean isCredentialsNonExpired() { return true; }
+
+    @Override
+    public boolean isEnabled() { return true; }
+
     public enum Role {
         USER, ADMIN
     }
 }
-

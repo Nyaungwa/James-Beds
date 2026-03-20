@@ -22,6 +22,7 @@ public class DataSeeder implements CommandLineRunner {
 
     private final ProductRepository productRepository;
 
+    @SuppressWarnings("null")
     @Override
     public void run(String... args) {
         // Only seed if there are no products yet
