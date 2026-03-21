@@ -16,7 +16,7 @@
 
 ### Homepage — Product Listing
 <!-- SCREENSHOT: Full homepage showing product grid with filtering -->
-![Homepage](https://github.com/Nyaungwa/James-Beds/tree/master/screenshots/screenshots/homepage.png)
+![Homepage](https://raw.githubusercontent.com/Nyaungwa/James-Beds/master/screenshots/homepage.png)
 
 ### Product Page
 <!-- SCREENSHOT: Single product page with image, price, quantity selector, Add to Cart button -->
