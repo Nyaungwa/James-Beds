@@ -185,9 +185,6 @@ function ProductPage() {
                         <div className="price-section">
                             <span className="current-price">R{state.price}</span>
                             <span className="old-price">R{oldPrice}</span>
-                            <span className="discount-badge">
-                                Save {discount}%
-                            </span>
                         </div>
 
                         {/* Description */}

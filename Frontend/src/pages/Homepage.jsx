@@ -284,7 +284,7 @@ function HomePage() {
         name: "Box Top Double Bed Set",
         price: 2999,
         oldPrice: 3799,
-        image: "/src/assets/Double.jpeg",
+        image: "/src/assets/blissbed_1722237766.png",
       },
       {
         id: 3,
