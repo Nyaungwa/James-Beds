@@ -20,19 +20,19 @@
 
 ### Product Page
 <!-- SCREENSHOT: Single product page with image, price, quantity selector, Add to Cart button -->
-![Product Page](.github/screenshots/productpage.png)
+![Product Page](https://raw.githubusercontent.com/Nyaungwa/James-Beds/master/screenshots/productpage.png)
 
 ### Shopping Cart
 <!-- SCREENSHOT: Cart page showing items, quantity controls +/-, item totals, order summary -->
-![Cart](.github/screenshots/shoppingcartpage.png)
+![Cart](https://raw.githubusercontent.com/Nyaungwa/James-Beds/master/screenshots/shoppingcartpage.png)
 
 ### PayFast Payment
 <!-- SCREENSHOT: PayFast sandbox payment page after being redirected from checkout -->
-![Payment](.github/screenshots/paymentpage.png)
+![Payment](https://raw.githubusercontent.com/Nyaungwa/James-Beds/master/screenshots/paymentpage.png)
 
 ### Order Confirmation
 <!-- SCREENSHOT: Payment success page or order status showing PAID -->
-![Order Confirmation](.github/screenshots/orderconfirmation.png)
+![Order Confirmation](https://raw.githubusercontent.com/Nyaungwa/James-Beds/master/screenshots/orderconfirmation.png)
 
 ---
 
