@@ -19,7 +19,8 @@ function HomePage() {
 
 
     const handleFilterSearch = () => {
-        fetch(`/api/products/filter?type=${type}&size=${size}&comfort=${comfort}`)
+        const apiBase = import.meta.env.VITE_API_URL || "";
+        fetch(`${apiBase}/api/products/filter?type=${type}&size=${size}&comfort=${comfort}`)
             .then(res => res.json())
             .then(data => {
                 console.log(data);
@@ -34,7 +35,8 @@ function HomePage() {
             setResults([]);
             return;
         }
-        fetch(`/api/products/search?q=${search}`)
+        const apiBase = import.meta.env.VITE_API_URL || "";
+        fetch(`${apiBase}/api/products/search?q=${search}`)
             .then(res => res.json())
             .then(data => setResults(data));
 
@@ -277,14 +279,14 @@ function HomePage() {
         name: "Pillow Top Single Bed Set",
         price: 2599,
         oldPrice: 3299,
-        image: "src/assets/Double.jpeg",
+        image: "src/assets/Queen.jpeg",
       },
       {
         id: 2,
         name: "Box Top Double Bed Set",
         price: 2999,
         oldPrice: 3799,
-        image: "/src/assets/blissbed_1722237766.png",
+        image: "/src/assets/Double.jpeg",
       },
       {
         id: 3,
@@ -298,7 +300,7 @@ function HomePage() {
         name: "Firm King Bed Set",
         price: 5999,
         oldPrice: 7299,
-        image: "/src/assets/King.jpeg",
+        image: "/src/assets/Queen.jpeg",
       },
     ].map((product) => {
       const discountPercent = Math.round(
@@ -350,7 +352,7 @@ function HomePage() {
       price: 2999,
       oldPrice: 3599,
       image:
-        "/src/assets/Strandmattress-Graduate-Duo-Mattress.jpg.webp",
+        "/src/assets/Queen.jpeg",
     },
     {
       id: 6,
@@ -358,14 +360,14 @@ function HomePage() {
       price: 3999,
       oldPrice: 4699,
       image:
-        "/src/assets/Strandmattress-Graduate-Lux-Mattress.jpg.webp",
+        "/src/assets/Queen.jpeg",
     },
     {
       id: 7,
       name: "Queen Mattress",
       price: 4999,
       oldPrice: 5799,
-      image: "/src/assets/Weightmaster-Mattress.jpg.webp",
+      image: "/src/assets/Queen.jpeg",
     },
     {
       id: 8,
@@ -373,7 +375,7 @@ function HomePage() {
       price: 10999,
       oldPrice: 12499,
       image:
-        "/src/assets/Sealy_Lannister_Extra_Firm_Mattress-1.jpg.webp",
+        "/src/assets/Queen.jpeg",
     },
   ].map((product) => {
     const discountPercent = Math.round(

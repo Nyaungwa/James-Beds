@@ -52,10 +52,12 @@ public class SecurityConfig {
         http
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/auth/**").permitAll()    
+                .requestMatchers("/webhooks/payfast").permitAll()
                 .requestMatchers("/api/products/**").permitAll()
                 .requestMatchers("/api/cart/**").authenticated()
                 .requestMatchers("/api/orders/**").authenticated()
+                .requestMatchers("/api/payments/**").authenticated()
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session
@@ -67,3 +69,4 @@ public class SecurityConfig {
         return http.build();
     }
 }
+

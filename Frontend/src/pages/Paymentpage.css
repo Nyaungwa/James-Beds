@@ -9,7 +9,7 @@
 
 
 .payment-top-panel {
-    background: #c5f6a6;
+    background: #0b1b01;
     padding: 30px 40px;
     display: flex;
     justify-content: center;
@@ -139,5 +139,3 @@
 .totals {
     margin-top: 20px;
 }
-
-

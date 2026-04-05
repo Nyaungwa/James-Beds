@@ -7,31 +7,37 @@ function PaymentPage() {
     const navigate = useNavigate();
     const { state } = useLocation();
 
+    // state now contains { cartItems: [...], total: number }
+    const cartItems = state?.cartItems || [];
+    const total = state?.total || 0;
+
     const handlePayNow = async () => {
-         console.log("Pay Now clicked");
+        const orderId = state?.orderId;
+        if (!orderId) {
+            console.error("No orderId found — order must be created before payment");
+            return;
+        }
         try {
-            const response = await fetch("http://localhost:5000/api/payfast/pay", {
+            const apiBase = import.meta.env.VITE_API_URL || "";
+            const token = localStorage.getItem("token");
+            const response = await fetch(`${apiBase}/api/payments/payfast/${orderId}`, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    amount: Number(state.price).toFixed(2),
-                    item_name: state.name
-                })
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                }
             });
 
             const data = await response.json();
-
-            window.location.href = data.url;
+            // Redirect to PayFast payment page
+            window.location.href = data.paymentUrl;
 
         } catch (error) {
             console.error("Payment error:", error);
-        } 
+        }
     };
 
-
-    if (!state) {
+    if (!state || cartItems.length === 0) {
         return <p style={{ padding: "40px" }}>No payment details found.</p>;
     }
 
@@ -46,17 +52,13 @@ function PaymentPage() {
                 </div>
             </div>
 
-    
             <div className="payment-page">
 
-
+                {/* LEFT SIDE — delivery form */}
                 <div className="payment-left">
-
                     <h3>Delivery</h3>
 
-                    <select>
-                        <option>South Africa</option>
-                    </select>
+                    <select><option>South Africa</option></select>
 
                     <div className="row">
                         <input type="text" placeholder="Name" />
@@ -70,54 +72,46 @@ function PaymentPage() {
                         <input type="text" placeholder="Postal Code" />
                     </div>
 
-                    <select>
-                        <option>Gauteng</option>
-                    </select>
+                    <select><option>Gauteng</option></select>
 
                     <input type="text" placeholder="Phone" />
 
                     <h3>Payment</h3>
 
-                    <button className="pay-btn" onClick = {handlePayNow}>
-                        Pay with 
-                        <img
-                            src = "/src/assets/PayFast-logo.png"
-                            alt = "PayFast"
-                            className = "payFast-logo"
-                        />
+                    <button className="pay-btn" onClick={handlePayNow}>
+                        Pay Now
+
                     </button>
                 </div>
 
-                {/* RIGHT SIDE */}
+                {/* RIGHT SIDE — now loops over cartItems */}
                 <div className="payment-right">
 
-                    <div className="summary-item">
-                        <img src={state.image} alt={state.name} />
+                    {cartItems.map((item, index) => (
+                        <div className="summary-item" key={index}>
+                            <img src={item.image} alt={item.name} />
 
-                        <div className="summary-text">
-                            <p className="product-name">
-                                {state.name}
-                            </p>
+                            <div className="summary-text">
+                                <p className="product-name">{item.name}</p>
+                                <p className="delivery-text">
+                                    Qty: {item.quantity} · Delivery: Free
+                                </p>
+                            </div>
 
-                            <p className="delivery-text">
-                                Delivery: Drop off (Free)
-                            </p>
+                            <span className="product-price">
+                                R{(item.price * item.quantity)}
+                            </span>
                         </div>
-
-                        <span className="product-price">
-                            R{state.price}
-                        </span>
-                    </div>
+                    ))}
 
                     <div className="totals">
                         <div>
                             <span>Subtotal</span>
-                            <span>R{state.price}</span>
+                            <span>R{total}</span>
                         </div>
-
                         <div>
-                            <strong>Total</strong>
-                            <strong>R{state.price}</strong>
+                            <strong>Total:   </strong>
+                            <strong>R{total}</strong>
                         </div>
                     </div>
 

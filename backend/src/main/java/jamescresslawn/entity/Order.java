@@ -46,7 +46,7 @@ public class Order {
     @Column(name = "shipping_address", columnDefinition = "TEXT")
     private String shippingAddress;
 
-    // Set by you (the admin) when you've shipped the order
+    
     @Column(name = "tracking_number")
     private String trackingNumber;
 
