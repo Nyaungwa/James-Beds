@@ -16,6 +16,8 @@ function App() {
         <Route path="/payment" element={<PaymentPage />} />
         <Route path="/success" element={<PaymentSuccess />} />
         <Route path="/cancel" element={<PaymentCancel />} />
+        <Route path="/payment-success" element={<PaymentSuccess />} />
+        <Route path="/payment-cancel" element={<PaymentCancel />} />
       </Routes>
     </BrowserRouter>
   );

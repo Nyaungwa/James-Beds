@@ -208,30 +208,7 @@ function CheckoutPage() {
                     {/* Payment CTA */}
                     <button
                         className="checkout-btn"
-                        onClick={async () => {
-                            try {
-                                const apiBase = import.meta.env.VITE_API_URL || "";
-                                const token = localStorage.getItem("token");
-                                const res = await fetch(`${apiBase}/api/orders`, {
-                                    method: "POST",
-                                    headers: {
-                                        "Content-Type": "application/json",
-                                        "Authorization": `Bearer ${token}`
-                                    },
-                                    body: JSON.stringify({ shippingAddress: "" })
-                                });
-                                const order = await res.json();
-                                navigate("/payment", {
-                                    state: {
-                                        cartItems,
-                                        total,
-                                        orderId: order.orderId
-                                    }
-                                });
-                            } catch (err) {
-                                console.error("Failed to create order:", err);
-                            }
-                        }}
+                        onClick={() => navigate("/payment", { state: { cartItems, total } })}
                     >
                         <FaLock /> Proceed to Payment
                     </button>

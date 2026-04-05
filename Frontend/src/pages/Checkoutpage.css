@@ -13,8 +13,20 @@ body {
 .checkout-page {
     min-height: 100%;
     background: #f5f5f7;
-    padding: 40px 80px;
     width: 100%;
+}
+
+.checkout-header,
+.checkout-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+.checkout-header {
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-bottom: 40px;
 }
 
 /* ================= BRAND ================= */

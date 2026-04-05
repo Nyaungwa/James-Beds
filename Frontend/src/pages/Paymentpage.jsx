@@ -11,30 +11,18 @@ function PaymentPage() {
     const cartItems = state?.cartItems || [];
     const total = state?.total || 0;
 
-    const handlePayNow = async () => {
-        const orderId = state?.orderId;
-        if (!orderId) {
-            console.error("No orderId found — order must be created before payment");
-            return;
-        }
-        try {
-            const apiBase = import.meta.env.VITE_API_URL || "";
-            const token = localStorage.getItem("token");
-            const response = await fetch(`${apiBase}/api/payments/payfast/${orderId}`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                }
-            });
-
-            const data = await response.json();
-            // Redirect to PayFast payment page
-            window.location.href = data.paymentUrl;
-
-        } catch (error) {
-            console.error("Payment error:", error);
-        }
+    const handlePayNow = () => {
+        const params = new URLSearchParams({
+            merchant_id: "10045300",
+            merchant_key: "7qiw0fpjlf2l6",
+            return_url: `${window.location.origin}/payment-success`,
+            cancel_url: `${window.location.origin}/payment-cancel`,
+            name_first: "Customer",
+            email_address: "customer@jamescresslawn.co.za",
+            amount: Number(total).toFixed(2),
+            item_name: "James Cresslawn Order"
+        });
+        window.location.href = `https://sandbox.payfast.co.za/eng/process?${params.toString()}`;
     };
 
     if (!state || cartItems.length === 0) {
