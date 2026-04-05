@@ -33,7 +33,7 @@ function ProductPage() {
         }
 
         const apiBase = import.meta.env.VITE_API_URL || "";
-        fetch(`${apiBase}/api/products/search?q=${search}`)
+        fetch(`${apiBase}/api/products/search?name=${search}`)
             .then(res => res.json())
             .then(data => setResults(data));
 

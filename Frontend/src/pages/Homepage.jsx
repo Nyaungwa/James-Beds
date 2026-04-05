@@ -82,7 +82,7 @@ function HomePage() {
             return;
         }
         const apiBase = import.meta.env.VITE_API_URL || "";
-        fetch(`${apiBase}/api/products/search?q=${search}`)
+        fetch(`${apiBase}/api/products/search?name=${search}`)
             .then(res => res.json())
             .then(data => setResults(data));
 
@@ -237,38 +237,39 @@ function HomePage() {
                 </p>
                 <div className="filter-box">
                     <div className="filter-row inline">
-                        <select 
+                        <select
                             className="filter-input small"
                             value={type}
                             onChange={(e) => setType(e.target.value)}
                         >
                             <option value="">Type</option>
-                            <option value="bed">Bed</option>
-                            <option value="mattress">Mattress</option>
+                            <option value="BED">Bed</option>
+                            <option value="MATTRESS">Mattress</option>
                         </select>
 
-                        <select 
+                        <select
                             className="filter-input small"
                             value={size}
                             onChange={(e) => setSize(e.target.value)}
                         >
-                            <option value ="">Size</option>
-                            <option value ="single">Single</option>
-                            <option value ="3/4">3/4</option>
-                            <option value ="double">Double</option>
-                            <option value = "queen">Queen</option>
-                            <option value = "king">King</option>
+                            <option value="">Size</option>
+                            <option value="SINGLE">Single</option>
+                            <option value="THREE_QUARTER">3/4</option>
+                            <option value="DOUBLE">Double</option>
+                            <option value="QUEEN">Queen</option>
+                            <option value="KING">King</option>
                         </select>
 
-                         <select 
+                        <select
                             className="filter-input small"
                             value={comfort}
                             onChange={(e) => setComfort(e.target.value)}
                         >
                             <option value="">Comfort</option>
-                            <option value= "Pillow Top">Pillow Top</option>
-                            <option value ="Box Top">Box Top</option>
-                            <option value = "Euro Top">Euro Top</option>
+                            <option value="SOFT">Soft</option>
+                            <option value="MEDIUM">Medium</option>
+                            <option value="FIRM">Firm</option>
+                            <option value="EXTRA_FIRM">Extra Firm</option>
                         </select>
 
                         <div className="filter-row center">
