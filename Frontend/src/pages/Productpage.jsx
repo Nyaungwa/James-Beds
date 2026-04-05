@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Homepage.css";
-import "./ProductPage.css";
+import "./Productpage.css";
 import {
     FaTruck,
     FaUser,

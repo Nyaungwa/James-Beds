@@ -1,4 +1,4 @@
-import "./CheckoutPage.css";
+import "./Checkoutpage.css";
 import {
     FaTrash,
     FaLock,

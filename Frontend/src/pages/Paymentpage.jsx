@@ -1,5 +1,5 @@
 import React from "react";
-import "./PaymentPage.css";
+import "./Paymentpage.css";
 import { useLocation, useNavigate } from "react-router-dom";
 
 function PaymentPage() {
