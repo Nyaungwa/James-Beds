@@ -279,28 +279,28 @@ function HomePage() {
         name: "Pillow Top Single Bed Set",
         price: 2599,
         oldPrice: 3299,
-        image: "src/assets/Queen.jpeg",
+        image: "/Single.jpeg",
       },
       {
         id: 2,
         name: "Box Top Double Bed Set",
         price: 2999,
         oldPrice: 3799,
-        image: "/src/assets/Double.jpeg",
+        image: "/Double.jpeg",
       },
       {
         id: 3,
         name: "Firm Queen Bed Set",
         price: 3999,
         oldPrice: 4899,
-        image: "/src/assets/Queen.jpeg",
+        image: "/Queen.jpeg",
       },
       {
         id: 4,
         name: "Firm King Bed Set",
         price: 5999,
         oldPrice: 7299,
-        image: "/src/assets/Queen.jpeg",
+        image: "/King.jpeg",
       },
     ].map((product) => {
       const discountPercent = Math.round(
@@ -351,31 +351,28 @@ function HomePage() {
       name: "Single Mattress",
       price: 2999,
       oldPrice: 3599,
-      image:
-        "/src/assets/Queen.jpeg",
+      image: "/Single.jpeg",
     },
     {
       id: 6,
       name: "Double Mattress",
       price: 3999,
       oldPrice: 4699,
-      image:
-        "/src/assets/Queen.jpeg",
+      image: "/Double.jpeg",
     },
     {
       id: 7,
       name: "Queen Mattress",
       price: 4999,
       oldPrice: 5799,
-      image: "/src/assets/Queen.jpeg",
+      image: "/Queen.jpeg",
     },
     {
       id: 8,
       name: "King Mattress",
       price: 10999,
       oldPrice: 12499,
-      image:
-        "/src/assets/Queen.jpeg",
+      image: "/King.jpeg",
     },
   ].map((product) => {
     const discountPercent = Math.round(

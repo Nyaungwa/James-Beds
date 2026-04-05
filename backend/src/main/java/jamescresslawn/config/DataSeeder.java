@@ -44,7 +44,7 @@ public class DataSeeder implements CommandLineRunner {
                 .size(Product.ProductSize.QUEEN)
                 .price(new BigDecimal("24999.00"))
                 .discountPrice(new BigDecimal("21499.00"))
-                .imageUrl("https://placehold.co/800x600?text=Regal+Sleigh+Bed")
+                .imageUrl("/Queen.jpeg")
                 .inStock(true)
                 .build(),
 
@@ -55,7 +55,7 @@ public class DataSeeder implements CommandLineRunner {
                 .type(Product.ProductType.BED)
                 .size(Product.ProductSize.KING)
                 .price(new BigDecimal("32500.00"))
-                .imageUrl("https://placehold.co/800x600?text=Imperial+Platform+Bed")
+                .imageUrl("/King.jpeg")
                 .inStock(true)
                 .build(),
 
@@ -67,7 +67,7 @@ public class DataSeeder implements CommandLineRunner {
                 .size(Product.ProductSize.QUEEN)
                 .price(new BigDecimal("38000.00"))
                 .discountPrice(new BigDecimal("33500.00"))
-                .imageUrl("https://placehold.co/800x600?text=Heritage+Four-Poster")
+                .imageUrl("/Queen.jpeg")
                 .inStock(true)
                 .build(),
 
@@ -78,7 +78,7 @@ public class DataSeeder implements CommandLineRunner {
                 .type(Product.ProductType.BED)
                 .size(Product.ProductSize.DOUBLE)
                 .price(new BigDecimal("15999.00"))
-                .imageUrl("https://placehold.co/800x600?text=Velvet+Upholstered+Bed")
+                .imageUrl("/Double.jpeg")
                 .inStock(true)
                 .build(),
 
@@ -92,7 +92,7 @@ public class DataSeeder implements CommandLineRunner {
                 .comfortLevel(Product.ComfortLevel.MEDIUM)
                 .price(new BigDecimal("18500.00"))
                 .discountPrice(new BigDecimal("15999.00"))
-                .imageUrl("https://placehold.co/800x600?text=Signature+Pocket+Spring")
+                .imageUrl("/Queen.jpeg")
                 .inStock(true)
                 .build(),
 
@@ -104,7 +104,7 @@ public class DataSeeder implements CommandLineRunner {
                 .size(Product.ProductSize.KING)
                 .comfortLevel(Product.ComfortLevel.FIRM)
                 .price(new BigDecimal("21000.00"))
-                .imageUrl("https://placehold.co/800x600?text=Orthopedic+Firm")
+                .imageUrl("/King.jpeg")
                 .inStock(true)
                 .build(),
 
@@ -116,7 +116,7 @@ public class DataSeeder implements CommandLineRunner {
                 .size(Product.ProductSize.QUEEN)
                 .comfortLevel(Product.ComfortLevel.SOFT)
                 .price(new BigDecimal("16800.00"))
-                .imageUrl("https://placehold.co/800x600?text=Cloud+Plush+Memory+Foam")
+                .imageUrl("/Queen.jpeg")
                 .inStock(true)
                 .build(),
 
@@ -129,7 +129,7 @@ public class DataSeeder implements CommandLineRunner {
                 .comfortLevel(Product.ComfortLevel.MEDIUM)
                 .price(new BigDecimal("4200.00"))
                 .discountPrice(new BigDecimal("3599.00"))
-                .imageUrl("https://placehold.co/800x600?text=Junior+Comfort+Mattress")
+                .imageUrl("/Single.jpeg")
                 .inStock(true)
                 .build()
         );
