@@ -164,7 +164,7 @@ function HomePage() {
                             <span className="icon-text">{user.name.split(" ")[0]}</span>
                         </div>
                     ) : (
-                        <div className="icon-items" onClick={() => { setShowAuthModal(true); setAuthMode("login"); }}>
+                        <div className="icon-items" onClick={() => navigate("/login")}>
                             <FaUser className="icon" />
                             <span className="icon-text">Login</span>
                         </div>

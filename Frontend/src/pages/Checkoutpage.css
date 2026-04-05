@@ -16,17 +16,10 @@ body {
     width: 100%;
 }
 
-.checkout-header,
-.checkout-container {
+.checkout-inner {
     max-width: 1100px;
     margin: 0 auto;
-    padding: 0 40px;
-}
-
-.checkout-header {
-    padding-top: 0;
-    padding-bottom: 0;
-    margin-bottom: 40px;
+    padding: 40px 40px;
 }
 
 /* ================= BRAND ================= */
@@ -41,7 +34,6 @@ body {
     padding: 20px 0;
     margin-bottom: 18px;
 }
-
 
 .checkout-brand h1 {
     font-size: 1.5rem;
@@ -228,7 +220,7 @@ body {
         flex-direction: column;
     }
 
-    .checkout-page {
+    .checkout-inner {
         padding: 20px;
     }
 }

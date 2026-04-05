@@ -5,6 +5,7 @@ import CheckoutPage from "./pages/Checkoutpage";
 import PaymentPage from "./pages/Paymentpage";
 import PaymentSuccess from "./pages/Paymentsuccess";
 import PaymentCancel from "./pages/Paymentcancel";
+import AuthPage from "./pages/AuthPage";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/cancel" element={<PaymentCancel />} />
         <Route path="/payment-success" element={<PaymentSuccess />} />
         <Route path="/payment-cancel" element={<PaymentCancel />} />
+        <Route path="/login" element={<AuthPage />} />
       </Routes>
     </BrowserRouter>
   );

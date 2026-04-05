@@ -83,6 +83,7 @@ function CheckoutPage() {
             </div>
 
 
+        <div className="checkout-inner">
             {/* ================= HEADER ================= */}
             <div className="checkout-header">
                 <button
@@ -221,6 +222,7 @@ function CheckoutPage() {
 
             </div>
 
+        </div>{/* end checkout-inner */}
         </div>
     );
 }
