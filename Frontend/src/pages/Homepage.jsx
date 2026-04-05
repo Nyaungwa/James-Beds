@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Homepage.css";
-import {FaUser, FaShoppingCart, FaSearch, FaFacebookF, FaInstagram} from "react-icons/fa";
+import {FaUser, FaShoppingCart, FaSearch, FaFacebookF, FaInstagram, FaTimes} from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 
@@ -16,6 +16,52 @@ function HomePage() {
     const [comfort, setComfort] = useState("");
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [hasSearched, setHasSearched] = useState(false);
+
+    // Auth state
+    const [showAuthModal, setShowAuthModal] = useState(false);
+    const [authMode, setAuthMode] = useState("login"); // "login" | "register"
+    const [authForm, setAuthForm] = useState({ fullName: "", email: "", password: "" });
+    const [authError, setAuthError] = useState("");
+    const [user, setUser] = useState(() => {
+        const token = localStorage.getItem("token");
+        const name = localStorage.getItem("userName");
+        return token ? { name } : null;
+    });
+
+    const handleAuthSubmit = async (e) => {
+        e.preventDefault();
+        setAuthError("");
+        const apiBase = import.meta.env.VITE_API_URL || "";
+        const endpoint = authMode === "login" ? "/api/auth/login" : "/api/auth/register";
+        const body = authMode === "login"
+            ? { email: authForm.email, password: authForm.password }
+            : { fullName: authForm.fullName, email: authForm.email, password: authForm.password };
+        try {
+            const res = await fetch(`${apiBase}${endpoint}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body)
+            });
+            const data = await res.json();
+            if (!res.ok) {
+                setAuthError(data.message || "Something went wrong");
+                return;
+            }
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("userName", data.fullName);
+            setUser({ name: data.fullName });
+            setShowAuthModal(false);
+            setAuthForm({ fullName: "", email: "", password: "" });
+        } catch {
+            setAuthError("Network error — is the backend running?");
+        }
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("userName");
+        setUser(null);
+    };
 
 
     const handleFilterSearch = () => {
@@ -112,10 +158,17 @@ function HomePage() {
 
                     </div>
                     {/* User */}
-                    <div className = "icon-items">
-                        <FaUser className = "icon" />
-                        <span className = "icon-text">Login</span>
-                    </div>
+                    {user ? (
+                        <div className="icon-items" onClick={handleLogout}>
+                            <FaUser className="icon" />
+                            <span className="icon-text">{user.name.split(" ")[0]}</span>
+                        </div>
+                    ) : (
+                        <div className="icon-items" onClick={() => { setShowAuthModal(true); setAuthMode("login"); }}>
+                            <FaUser className="icon" />
+                            <span className="icon-text">Login</span>
+                        </div>
+                    )}
                     
                     {/* Shopping Cart */}
                     <div className = "icon-items">
@@ -451,6 +504,59 @@ function HomePage() {
     © {new Date().getFullYear()} James Cresslawn Luxury Beds. All rights reserved.
   </div>
 </footer>
+
+{/* ================= AUTH MODAL ================= */}
+{showAuthModal && (
+    <div className="auth-overlay" onClick={() => setShowAuthModal(false)}>
+        <div className="auth-modal" onClick={e => e.stopPropagation()}>
+            <button className="auth-close" onClick={() => setShowAuthModal(false)}>
+                <FaTimes />
+            </button>
+
+            <h2 className="auth-title">
+                {authMode === "login" ? "Welcome Back" : "Create Account"}
+            </h2>
+
+            <form onSubmit={handleAuthSubmit} className="auth-form">
+                {authMode === "register" && (
+                    <input
+                        type="text"
+                        placeholder="Full Name"
+                        value={authForm.fullName}
+                        onChange={e => setAuthForm({ ...authForm, fullName: e.target.value })}
+                        required
+                    />
+                )}
+                <input
+                    type="email"
+                    placeholder="Email"
+                    value={authForm.email}
+                    onChange={e => setAuthForm({ ...authForm, email: e.target.value })}
+                    required
+                />
+                <input
+                    type="password"
+                    placeholder="Password"
+                    value={authForm.password}
+                    onChange={e => setAuthForm({ ...authForm, password: e.target.value })}
+                    required
+                />
+                {authError && <p className="auth-error">{authError}</p>}
+                <button type="submit" className="auth-submit">
+                    {authMode === "login" ? "Login" : "Register"}
+                </button>
+            </form>
+
+            <p className="auth-switch">
+                {authMode === "login" ? "Don't have an account? " : "Already have an account? "}
+                <span onClick={() => { setAuthMode(authMode === "login" ? "register" : "login"); setAuthError(""); }}>
+                    {authMode === "login" ? "Register" : "Login"}
+                </span>
+            </p>
+        </div>
+    </div>
+)}
+
     </div>
     );
 }
