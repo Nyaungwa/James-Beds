@@ -372,7 +372,6 @@ james-cresslawn/
 | Phase 3 | Shopping cart | ✅ Complete |
 | Phase 4 | Order creation | ✅ Complete |
 | Phase 5 | PayFast payment | ✅ Complete |
-| Phase 6 | Email confirmations + tracking | 🔄 In Progress |
 
 ---
 
