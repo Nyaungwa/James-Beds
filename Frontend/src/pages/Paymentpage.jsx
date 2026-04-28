@@ -33,9 +33,8 @@ function PaymentPage() {
         <div className="payment-container">
 
             <div className="payment-top-panel">
-                <div className="brand">
+                <div className="payment-brand" onClick={() => navigate("/")}>
                     <span className="brand-main">James</span>
-                    <br />
                     <span className="brand-sub">Best Affordable Beds</span>
                 </div>
             </div>
@@ -44,36 +43,38 @@ function PaymentPage() {
 
                 {/* LEFT SIDE — delivery form */}
                 <div className="payment-left">
-                    <h3>Delivery</h3>
+                    <div className="payment-left-inner">
+                        <h3>Delivery</h3>
 
-                    <select><option>South Africa</option></select>
+                        <select><option>South Africa</option></select>
 
-                    <div className="row">
-                        <input type="text" placeholder="Name" />
-                        <input type="text" placeholder="Surname" />
+                        <div className="row">
+                            <input type="text" placeholder="Name" />
+                            <input type="text" placeholder="Surname" />
+                        </div>
+
+                        <input type="text" placeholder="Address" />
+
+                        <div className="row">
+                            <input type="text" placeholder="City" />
+                            <input type="text" placeholder="Postal Code" />
+                        </div>
+
+                        <select><option>Gauteng</option></select>
+
+                        <input type="text" placeholder="Phone" />
+
+                        <h3>Payment</h3>
+
+                        <button className="pay-btn" onClick={handlePayNow}>
+                            Pay Now
+                        </button>
                     </div>
-
-                    <input type="text" placeholder="Address" />
-
-                    <div className="row">
-                        <input type="text" placeholder="City" />
-                        <input type="text" placeholder="Postal Code" />
-                    </div>
-
-                    <select><option>Gauteng</option></select>
-
-                    <input type="text" placeholder="Phone" />
-
-                    <h3>Payment</h3>
-
-                    <button className="pay-btn" onClick={handlePayNow}>
-                        Pay Now
-
-                    </button>
                 </div>
 
                 {/* RIGHT SIDE — now loops over cartItems */}
                 <div className="payment-right">
+                    <p className="payment-right-title">Order Summary</p>
 
                     {cartItems.map((item, index) => (
                         <div className="summary-item" key={index}>
@@ -98,7 +99,7 @@ function PaymentPage() {
                             <span>R{total}</span>
                         </div>
                         <div>
-                            <strong>Total:   </strong>
+                            <strong>Total</strong>
                             <strong>R{total}</strong>
                         </div>
                     </div>

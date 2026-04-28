@@ -1,4 +1,13 @@
 
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+/* ===== CONTAINER ===== */
+
 .payment-container {
     min-height: 100vh;
     background: #fff;
@@ -7,135 +16,262 @@
     width: 100vw;
 }
 
+/* ===== BRAND HEADER ===== */
 
 .payment-top-panel {
     background: #0b1b01;
-    padding: 30px 40px;
+    padding: 18px 40px;
     display: flex;
     justify-content: center;
     align-items: center;
-    text-align: center;
 }
 
-.brand {
-    text-align: center;
+.payment-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
 }
 
 .brand-main {
     font-size: 2rem;
-    font-weight: 400;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-weight: 700;
+    color: white;
+    letter-spacing: -0.5px;
+    line-height: 1;
 }
 
 .brand-sub {
-    font-size: 0.9rem;
-    letter-spacing: 1px;
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.65);
+    font-weight: 400;
 }
 
+/* ===== TWO-COLUMN LAYOUT ===== */
 
 .payment-page {
     display: flex;
+    flex: 1;
+    width: 100%;
 }
 
+/* ===== LEFT — DELIVERY / PAYMENT FORM ===== */
 
 .payment-left {
-    width: 60%;
+    width: 55%;
     background: #c5f6a6;
-    padding: 80px 60px;
+    display: flex;
+    justify-content: center;
+    padding: 56px 40px 80px;
+}
+
+/* Inner wrapper constrains form width without cutting the green background */
+.payment-left-inner {
+    width: 100%;
+    max-width: 420px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
 }
 
 .payment-left h3 {
-    margin-top: 25px;
-  
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #1a3a0a;
+    margin-top: 24px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
+
+.payment-left h3:first-child {
+    margin-top: 0;
+}
+
+/* Inputs & selects */
 
 .payment-left input,
 .payment-left select {
-    padding: 12px;
+    width: 100%;
+    padding: 11px 14px;
     border-radius: 8px;
-    border: 1px solid transparent;
+    border: 1.5px solid rgba(0, 0, 0, 0.13);
+    background: rgba(255, 255, 255, 0.78);
     outline: none;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
+    color: #111;
+    transition: border-color 0.18s, background 0.18s, box-shadow 0.18s;
+    -webkit-appearance: none;
+    appearance: none;
 }
 
+.payment-left input:focus,
+.payment-left select:focus {
+    border-color: #3a8a1a;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(58, 138, 26, 0.14);
+}
+
+.payment-left input::placeholder {
+    color: #999;
+    font-size: 0.88rem;
+}
+
+/* Two-input row */
 
 .row {
     display: flex;
     gap: 12px;
 }
 
+.row input {
+    flex: 1;
+    width: auto;
+}
+
+/* ===== PAY BUTTON ===== */
 
 .pay-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap:12px;
-    padding: 14px;
-    border-radius: 30px;
+    align-self: center;
+    padding: 14px 52px;
+    border-radius: 40px;
     border: none;
-    background: grey;
-    color: white;
+    background: #0b1b01;
+    color: #fff;
+    font-size: 0.95rem;
     font-weight: 600;
+    letter-spacing: 0.4px;
     cursor: pointer;
+    margin-top: 10px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .pay-btn:hover {
-    opacity: 0.9;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
 }
 
-.payFast-logo {
-    height: 22px;
+.pay-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
 }
+
+/* ===== RIGHT — ORDER SUMMARY ===== */
 
 .payment-right {
-    width: 40%;
-    padding: 70px 60px;
+    flex: 1;
+    background: #f7f7f5;
+    border-left: 1px solid #e2e2de;
+    padding: 56px 52px 80px;
 }
 
+.payment-right-title {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 20px;
+}
+
+/* Summary items */
 
 .summary-item {
     display: flex;
     align-items: center;
-    gap: 15px;
-    margin-bottom: 30px;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid #e0e0da;
 }
 
 .summary-item img {
-    width: 70px;
-    height: 70px;
+    width: 62px;
+    height: 62px;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: #fff;
+    flex-shrink: 0;
 }
 
 .summary-text {
     flex: 1;
+    min-width: 0;
 }
 
 .product-name {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: 600;
-    margin-bottom: 6px;
-}
-
-.product-details {
-    font-weight: 400;
-    font-size: 0.85rem;
-    color: #555;
+    color: #111;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .delivery-text {
-    font-size: 0.85rem;
-    color: #555;
+    font-size: 0.78rem;
+    color: #888;
 }
 
 .product-price {
-    
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     font-weight: 600;
+    color: #111;
+    white-space: nowrap;
+    margin-left: 8px;
 }
 
+/* Totals */
+
 .totals {
-    margin-top: 20px;
+    margin-top: 8px;
+}
+
+.totals > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    font-size: 0.88rem;
+    color: #555;
+    border-bottom: 1px solid #e8e8e4;
+}
+
+.totals > div:last-child {
+    border-bottom: none;
+    border-top: 2px solid #111;
+    margin-top: 4px;
+    padding-top: 14px;
+    font-size: 1rem;
+    color: #111;
+}
+
+.totals > div:last-child strong {
+    color: #111;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 768px) {
+    .payment-page {
+        flex-direction: column;
+    }
+
+    .payment-left,
+    .payment-right {
+        width: 100%;
+        padding: 40px 24px;
+    }
+
+    .payment-left {
+        padding-bottom: 48px;
+    }
 }
