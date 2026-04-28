@@ -10,6 +10,11 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * CORS configuration bean.
+ * Allowed origins are read from {@code cors.allowed-origins} in application.properties,
+ * defaulting to localhost dev ports if not set.
+ */
 @Configuration
 public class CorsConfig {
 

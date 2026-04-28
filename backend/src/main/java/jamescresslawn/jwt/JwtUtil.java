@@ -15,37 +15,20 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
- * JwtUtil handles everything related to JWT tokens.
- *
- * What is a JWT?
- * A JWT (JSON Web Token) is a string with 3 parts separated by dots:
- *   header.payload.signature
- *
- * Example:
- *   eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGdtYWlsLmNvbSIsImlhdCI6MTY...
- *
- * - Header: says which algorithm was used (HS256)
- * - Payload: contains the data (email, expiry time, etc.)
- * - Signature: proves the token wasn't tampered with
- *
- * The server signs the token with a secret key.
- * When the client sends the token back, the server verifies the signature.
- * If the signature is valid, the server trusts the data inside.
+ * Utility component for creating, validating, and parsing JWT tokens.
+ * Tokens are signed with HMAC-SHA256 using the secret configured in application.properties.
  */
 @Component
 public class JwtUtil {
 
-    // Read the secret key from application.properties
     @Value("${jwt.secret}")
     private String secret;
 
-    // Read the expiration time from application.properties
     @Value("${jwt.expiration}")
     private long expiration;
 
     /**
-     * Converts the secret string into a proper cryptographic key.
-     * We use HMAC-SHA256 (HS256) algorithm.
+     * Derives the HMAC-SHA256 signing key from the configured secret string.
      */
     private Key getSigningKey() {
         byte[] keyBytes = secret.getBytes();
@@ -53,55 +36,50 @@ public class JwtUtil {
     }
 
     /**
-     * GENERATE TOKEN
-     * Creates a new JWT token for a user after successful login.
+     * Generates a signed JWT token for the given user.
+     * The token subject is set to the user's username (email).
      *
-     * The token contains:
-     * - subject: the user's email (used to identify who the token belongs to)
-     * - issuedAt: when the token was created
-     * - expiration: when the token expires (24 hours from now)
-     * - signature: proves the token is valid
+     * @param userDetails the authenticated user
+     * @return a compact, signed JWT string
      */
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        // You can add extra data to the token here if needed
-        // e.g. claims.put("role", user.getRole());
         return createToken(claims, userDetails.getUsername());
     }
 
     private String createToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(subject)                                        // email
-                .setIssuedAt(new Date(System.currentTimeMillis()))          // now
-                .setExpiration(new Date(System.currentTimeMillis() + expiration)) // now + 24h
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)         // sign it
-                .compact();                                                  // build the string
+                .setSubject(subject)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .compact();
     }
 
     /**
-     * EXTRACT EMAIL FROM TOKEN
-     * Reads the subject (email) we stored inside the token.
-     * Called when a request comes in with a token — we need to know WHOSE token it is.
+     * Extracts the email address (subject) embedded in a JWT token.
+     *
+     * @param token the JWT string
+     * @return the email stored as the token subject
      */
     public String extractEmail(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
     /**
-     * VALIDATE TOKEN
-     * Checks two things:
-     * 1. The email in the token matches the user we loaded from the database
-     * 2. The token hasn't expired yet
+     * Validates a token by confirming the subject matches the given user
+     * and that the token has not expired.
+     *
+     * @param token       the JWT string
+     * @param userDetails the user to validate against
+     * @return {@code true} if the token is valid for the given user
      */
     public boolean validateToken(String token, UserDetails userDetails) {
         final String email = extractEmail(token);
         return (email.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
-    /**
-     * CHECK IF TOKEN IS EXPIRED
-     */
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
@@ -111,9 +89,12 @@ public class JwtUtil {
     }
 
     /**
-     * EXTRACT ANY CLAIM FROM TOKEN
-     * A "claim" is any piece of data stored inside the token.
-     * This is a generic helper used by the specific extract methods above.
+     * Generic helper that extracts any single claim from the token payload.
+     *
+     * @param token          the JWT string
+     * @param claimsResolver function mapping {@link Claims} to the desired value
+     * @param <T>            the return type
+     * @return the extracted claim value
      */
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
@@ -121,9 +102,11 @@ public class JwtUtil {
     }
 
     /**
-     * PARSE AND VERIFY THE TOKEN
-     * This uses our secret key to verify the token's signature.
-     * If the token was tampered with or uses a different key, this throws an exception.
+     * Parses and verifies the full token using the signing key.
+     * Throws a {@code JwtException} if the token is invalid or has been tampered with.
+     *
+     * @param token the JWT string
+     * @return all claims from the verified token body
      */
     private Claims extractAllClaims(String token) {
         return Jwts.parserBuilder()

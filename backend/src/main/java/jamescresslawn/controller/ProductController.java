@@ -10,24 +10,33 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * Basic product controller to verify the DB connection is working.
- * We will expand this with a full Service layer in the next phase.
+ * REST controller for product catalogue operations.
+ * Exposes endpoints under /api/products.
  */
 @RestController
 @RequestMapping("/api/products")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")   // Allow your React frontend to call this API
+@CrossOrigin(origins = "*")
 public class ProductController {
 
     private final ProductRepository productRepository;
 
-    // GET /api/products  →  returns all products
+    /**
+     * Returns all products in the catalogue.
+     *
+     * @return list of all {@link Product} records
+     */
     @GetMapping
     public ResponseEntity<List<Product>> getAllProducts() {
         return ResponseEntity.ok(productRepository.findAll());
     }
 
-    // GET /api/products/{id}  →  returns one product or 404
+    /**
+     * Returns a single product by ID, or 404 if not found.
+     *
+     * @param id the product UUID
+     * @return the matching product or a 404 response
+     */
     @SuppressWarnings("null")
     @GetMapping("/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable String id) {
@@ -36,7 +45,12 @@ public class ProductController {
             .orElse(ResponseEntity.notFound().build());
     }
 
-    // GET /api/products/search?name=regal  →  search by name
+    /**
+     * Returns products whose names contain the given search term (case-insensitive).
+     *
+     * @param name the search term
+     * @return matching products
+     */
     @GetMapping("/search")
     public ResponseEntity<List<Product>> search(@RequestParam String name) {
         return ResponseEntity.ok(
@@ -44,7 +58,15 @@ public class ProductController {
         );
     }
 
-    // GET /api/products/filter?type=BED&size=QUEEN
+    /**
+     * Returns products matching the given filter criteria.
+     * All parameters are optional; omitted filters are ignored.
+     *
+     * @param type    product type (BED or MATTRESS)
+     * @param size    bed/mattress size
+     * @param comfort comfort level (mattresses only)
+     * @return filtered product list
+     */
     @GetMapping("/filter")
     public ResponseEntity<List<Product>> filter(
             @RequestParam(required = false) Product.ProductType type,

@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * REST controller for PayFast payment operations.
+ * Exposes the payment initiation endpoint and the ITN webhook receiver.
+ */
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -88,8 +92,7 @@ public class PaymentController {
     @PostMapping("/webhooks/payfast")
     public ResponseEntity<String> handleItn(HttpServletRequest request) {
         try {
-            // Read all form parameters from the PayFast POST request
-            // PayFast sends application/x-www-form-urlencoded (form data, not JSON)
+            // PayFast sends application/x-www-form-urlencoded, not JSON.
             Map<String, String> itnData = new HashMap<>();
             request.getParameterMap().forEach((key, values) -> {
                 if (values != null && values.length > 0) {
@@ -101,14 +104,12 @@ public class PaymentController {
 
             paymentService.handleItn(itnData);
 
-            // PayFast requires HTTP 200 to confirm receipt
-            // If we return anything else, PayFast retries the ITN
+            // PayFast retries the ITN if we return anything other than 200.
             return ResponseEntity.ok("OK");
 
         } catch (Exception e) {
             log.error("PayFast ITN processing failed: {}", e.getMessage(), e);
-            // Return 200 even on our internal errors to prevent PayFast spam retries
-            // The important logging is above — we can investigate from logs
+            // Return 200 even on internal errors to prevent PayFast retry spam.
             return ResponseEntity.ok("OK");
         }
     }

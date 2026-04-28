@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+/**
+ * REST controller for shopping cart operations.
+ * Exposes endpoints under /api/cart. All endpoints require authentication.
+ */
 @RestController
 @RequestMapping("/api/cart")
 @RequiredArgsConstructor

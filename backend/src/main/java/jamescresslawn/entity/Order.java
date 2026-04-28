@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "orders") // "order" is a reserved SQL word, so we use "orders"
+@Table(name = "orders") // "order" is a reserved SQL keyword; the table is named "orders"
 @Getter
 @Setter
 @NoArgsConstructor
@@ -27,22 +27,15 @@ public class Order {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    // Order goes through these statuses:
-    // PENDING (created) → PAID (payment confirmed) → PROCESSING → SHIPPED →
-    // DELIVERED
-    // CANCELLED is also possible at any point before SHIPPED
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     @Builder.Default
     private OrderStatus status = OrderStatus.PENDING;
 
-    // Total amount at the time of ordering - never recalculate this from products
-    // Product prices can change but this order was for THIS amount
+    // Snapshotted at order creation — never recalculate from live product prices.
     @Column(name = "total_amount", nullable = false, precision = 10, scale = 2)
     private BigDecimal totalAmount;
 
-    // Full shipping address as a single text block for simplicity
-    // In a bigger system you'd break this into street, city, postal code etc.
     @Column(name = "shipping_address", columnDefinition = "TEXT")
     private String shippingAddress;
 
@@ -58,13 +51,11 @@ public class Order {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    // One order contains many order items
-    // CascadeType.ALL = saving/deleting an order also saves/deletes its items
+    // CascadeType.ALL: persisting or deleting an Order cascades to its OrderItems.
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Builder.Default
     private List<OrderItem> orderItems = new ArrayList<>();
 
-    // One order has one payment record
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Payment payment;
 

@@ -20,6 +20,10 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * Service layer for PayFast payment integration.
+ * Handles payment initiation and ITN (Instant Transaction Notification) processing.
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -37,6 +41,14 @@ public class PaymentService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
+    /**
+     * Prepares the payment parameters required to redirect the user to PayFast.
+     * Builds the parameter map in the order PayFast requires, computes the MD5 signature,
+     * and returns a response containing the payment URL and all form fields.
+     *
+     * @param orderId the UUID of the order to pay for
+     * @return a {@link PayFastInitiateResponse} with the payment URL and signed params
+     */
     @SuppressWarnings("null")
     public PayFastInitiateResponse initiatePayment(String orderId) {
         User user = getCurrentUser();
@@ -60,11 +72,10 @@ public class PaymentService {
                 .setScale(2, RoundingMode.HALF_UP)
                 .toPlainString();
 
-        // Build params in exact order PayFast expects
+        // Build params in exact order PayFast requires for signature generation.
         Map<String, String> params = new LinkedHashMap<>();
         params.put("merchant_id",  payFastConfig.getMerchantId());
         params.put("merchant_key", payFastConfig.getMerchantKey());
-
         params.put("return_url",   payFastConfig.getReturnUrl() + "?orderId=" + orderId);
         params.put("cancel_url",   payFastConfig.getCancelUrl() + "?orderId=" + orderId);
         params.put("notify_url",   payFastConfig.getNotifyUrl());
@@ -73,12 +84,9 @@ public class PaymentService {
         params.put("name_first",    nameParts[0]);
         params.put("name_last",     nameParts.length > 1 ? nameParts[1] : "");
         params.put("email_address", user.getEmail());
-
         params.put("m_payment_id", orderId);
         params.put("amount",       amount);
         params.put("item_name",    "James Cresslawn Order #" + orderId.substring(0, 8));
-
-
 
         String signature = generateSignature(params);
         params.put("signature", signature);
@@ -94,18 +102,18 @@ public class PaymentService {
     }
 
     /**
-     * PayFast signature generation — fixed version.
+     * Generates the MD5 signature required by PayFast for both payment initiation and ITN.
+     * <p>
+     * The algorithm mirrors PHP's {@code urlencode()} behaviour used by the PayFast PHP SDK:
+     * <ol>
+     *   <li>Concatenate all params (excluding {@code signature}) as {@code key=value} pairs
+     *       joined by {@code &}, with values percent-encoded (spaces as {@code +}).</li>
+     *   <li>If a passphrase is configured, append {@code &passphrase=ENCODED_VALUE}.</li>
+     *   <li>MD5-hash the resulting string and return the lowercase hex digest.</li>
+     * </ol>
      *
-     * The exact rules PayFast uses:
-     * 1. Take all params (excluding signature) as key=value
-     * 2. URL-encode each VALUE using standard percent-encoding
-     * 3. Join with & character
-     * 4. If passphrase is set, append &passphrase=ENCODED_PASSPHRASE
-     * 5. MD5 hash the entire string
-     *
-     * The critical fix: PayFast uses PHP's urlencode() which encodes
-     * spaces as + NOT %20, and encodes : / ? = & in URLs.
-     * We must match PHP's urlencode() exactly.
+     * @param params ordered parameter map (must not contain the signature key)
+     * @return lowercase MD5 hex string
      */
     public String generateSignature(Map<String, String> params) {
         try {
@@ -116,13 +124,9 @@ public class PaymentService {
                 if (entry.getValue() == null || entry.getValue().isEmpty()) continue;
 
                 if (sb.length() > 0) sb.append("&");
-
-                // Use PHP-compatible URL encoding (spaces become +, not %20)
-                String encodedValue = phpUrlencode(entry.getValue());
-                sb.append(entry.getKey()).append("=").append(encodedValue);
+                sb.append(entry.getKey()).append("=").append(phpUrlencode(entry.getValue()));
             }
 
-            // Append passphrase if configured
             String passphrase = payFastConfig.getPassphrase();
             if (passphrase != null && !passphrase.trim().isEmpty()) {
                 sb.append("&passphrase=").append(phpUrlencode(passphrase));
@@ -131,7 +135,6 @@ public class PaymentService {
             String signatureString = sb.toString();
             log.debug("PayFast signature input: {}", signatureString);
 
-            // MD5 hash
             MessageDigest md = MessageDigest.getInstance("MD5");
             byte[] hashBytes = md.digest(signatureString.getBytes(StandardCharsets.UTF_8));
 
@@ -150,17 +153,15 @@ public class PaymentService {
     }
 
     /**
-     * Mimics PHP's urlencode() function.
+     * URL-encodes a value using PHP's {@code urlencode()} convention
+     * (spaces as {@code +}, special characters as {@code %XX}).
+     * Java's {@code URLEncoder} with UTF-8 matches this behaviour exactly.
      *
-     * PHP urlencode() encodes spaces as + and uses %XX for everything else.
-     * Java's URLEncoder.encode() does the same thing by default with UTF-8.
-     * This is what PayFast's PHP SDK uses, so we must match it exactly.
+     * @param value the raw string to encode
+     * @return the percent-encoded string
      */
     private String phpUrlencode(String value) {
         try {
-            // Java's URLEncoder matches PHP's urlencode:
-            // spaces → +
-            // special chars → %XX
             return java.net.URLEncoder.encode(value, "UTF-8");
         } catch (Exception e) {
             return value;
@@ -173,7 +174,7 @@ public class PaymentService {
 
             for (Map.Entry<String, String> entry : params.entrySet()) {
                 if (entry.getKey().equals("signature")) continue;
-                // NOTE: do NOT skip empty values here - PayFast includes them
+                // PayFast includes empty values in the ITN signature string.
                 if (entry.getValue() == null) continue;
 
                 if (sb.length() > 0) sb.append("&");
@@ -182,7 +183,6 @@ public class PaymentService {
                     .append(phpUrlencode(entry.getValue()));
             }
 
-            // Append passphrase if set
             String passphrase = payFastConfig.getPassphrase();
             if (passphrase != null && !passphrase.trim().isEmpty()) {
                 sb.append("&passphrase=").append(phpUrlencode(passphrase));
@@ -205,89 +205,100 @@ public class PaymentService {
         } catch (Exception e) {
             throw new RuntimeException("Failed to generate ITN signature", e);
         }
-    }    
+    }
 
+    /**
+     * Processes a PayFast ITN (Instant Transaction Notification) webhook.
+     * <p>
+     * Verification flow:
+     * <ol>
+     *   <li>In production, validates the MD5 signature against the received params.</li>
+     *   <li>Checks {@code payment_status == COMPLETE}.</li>
+     *   <li>Resolves the order via {@code m_payment_id}.</li>
+     *   <li>Verifies {@code amount_gross} matches the order total (prevents partial payment fraud).</li>
+     *   <li>Idempotency guard: skips orders already marked PAID.</li>
+     *   <li>Marks the order PAID and persists a {@link Payment} record.</li>
+     * </ol>
+     * <p>
+     * Sandbox mode skips signature validation due to known PayFast sandbox ITN issues.
+     * In production, supplement with PayFast IP whitelist verification.
+     *
+     * @param itnData all form parameters received from PayFast
+     */
     @Transactional
     @SuppressWarnings("null")
-public void handleItn(Map<String, String> itnData) {
-    log.info("PayFast ITN received: {}", itnData);
+    public void handleItn(Map<String, String> itnData) {
+        log.info("PayFast ITN received: {}", itnData);
 
-    // In sandbox mode, skip signature validation.
-    // PayFast sandbox has known issues with ITN signature order.
-    // In production, use PayFast IP whitelist verification instead.
-    if (!payFastConfig.isSandbox()) {
-        String receivedSignature = itnData.get("signature");
-        if (receivedSignature == null) {
-            throw new RuntimeException("ITN missing signature");
+        // Sandbox skips signature validation; PayFast sandbox has known ITN parameter-order issues.
+        // In production, also enforce PayFast IP whitelist verification.
+        if (!payFastConfig.isSandbox()) {
+            String receivedSignature = itnData.get("signature");
+            if (receivedSignature == null) {
+                throw new RuntimeException("ITN missing signature");
+            }
+            Map<String, String> paramsToVerify = new LinkedHashMap<>(itnData);
+            paramsToVerify.remove("signature");
+            String expectedSignature = generateItnSignature(paramsToVerify);
+            if (!expectedSignature.equalsIgnoreCase(receivedSignature)) {
+                log.error("ITN signature mismatch | Expected: {} | Received: {}",
+                    expectedSignature, receivedSignature);
+                throw new RuntimeException("ITN signature validation failed");
+            }
+            log.info("ITN signature validated ✓");
+        } else {
+            log.info("Sandbox mode: skipping ITN signature validation");
         }
-        Map<String, String> paramsToVerify = new LinkedHashMap<>(itnData);
-        paramsToVerify.remove("signature");
-        String expectedSignature = generateItnSignature(paramsToVerify);
-        if (!expectedSignature.equalsIgnoreCase(receivedSignature)) {
-            log.error("ITN signature mismatch | Expected: {} | Received: {}",
-                expectedSignature, receivedSignature);
-            throw new RuntimeException("ITN signature validation failed");
+
+        String paymentStatus = itnData.get("payment_status");
+        if (!"COMPLETE".equalsIgnoreCase(paymentStatus)) {
+            log.warn("ITN: payment not complete. Status: {}", paymentStatus);
+            return;
         }
-        log.info("ITN signature validated ✓");
-    } else {
-        log.info("Sandbox mode: skipping ITN signature validation");
+
+        String orderId = itnData.get("m_payment_id");
+        if (orderId == null) {
+            throw new RuntimeException("ITN missing m_payment_id");
+        }
+
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found: " + orderId));
+
+        String itnAmount = itnData.get("amount_gross");
+        if (itnAmount == null) {
+            throw new RuntimeException("ITN missing amount_gross");
+        }
+
+        BigDecimal paidAmount = new BigDecimal(itnAmount).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal orderAmount = order.getTotalAmount().setScale(2, RoundingMode.HALF_UP);
+
+        if (paidAmount.compareTo(orderAmount) != 0) {
+            log.error("ITN AMOUNT MISMATCH | Paid: {} | Expected: {}", paidAmount, orderAmount);
+            throw new RuntimeException("Amount mismatch");
+        }
+
+        log.info("Amount verified: {} ✓", paidAmount);
+
+        // Idempotency: ignore duplicate ITN notifications for an already-paid order.
+        if (order.getStatus() == Order.OrderStatus.PAID) {
+            log.warn("Order {} already PAID, ignoring duplicate ITN", orderId);
+            return;
+        }
+
+        order.setStatus(Order.OrderStatus.PAID);
+        orderRepository.save(order);
+        log.info("Order {} marked as PAID ✓", orderId);
+
+        Payment payment = Payment.builder()
+                .order(order)
+                .provider(Payment.PaymentProvider.PAYFAST)
+                .providerReference(itnData.get("pf_payment_id"))
+                .status(Payment.PaymentStatus.COMPLETED)
+                .amount(paidAmount)
+                .paidAt(LocalDateTime.now())
+                .build();
+
+        paymentRepository.save(payment);
+        log.info("Payment record saved for order: {}", orderId);
     }
-
-    // Check payment status
-    String paymentStatus = itnData.get("payment_status");
-    if (!"COMPLETE".equalsIgnoreCase(paymentStatus)) {
-        log.warn("ITN: payment not complete. Status: {}", paymentStatus);
-        return;
-    }
-
-    // Find the order
-    String orderId = itnData.get("m_payment_id");
-    if (orderId == null) {
-        throw new RuntimeException("ITN missing m_payment_id");
-    }
-
-    Order order = orderRepository.findById(orderId)
-            .orElseThrow(() -> new RuntimeException("Order not found: " + orderId));
-
-    // Verify amount
-    String itnAmount = itnData.get("amount_gross");
-    if (itnAmount == null) {
-        throw new RuntimeException("ITN missing amount_gross");
-    }
-
-    BigDecimal paidAmount = new BigDecimal(itnAmount).setScale(2, RoundingMode.HALF_UP);
-    BigDecimal orderAmount = order.getTotalAmount().setScale(2, RoundingMode.HALF_UP);
-
-    if (paidAmount.compareTo(orderAmount) != 0) {
-        log.error("ITN AMOUNT MISMATCH | Paid: {} | Expected: {}", paidAmount, orderAmount);
-        throw new RuntimeException("Amount mismatch");
-    }
-
-    log.info("Amount verified: {} ✓", paidAmount);
-
-    // Idempotency check
-    if (order.getStatus() == Order.OrderStatus.PAID) {
-        log.warn("Order {} already PAID, ignoring duplicate ITN", orderId);
-        return;
-    }
-
-    // Mark as PAID
-    order.setStatus(Order.OrderStatus.PAID);
-    orderRepository.save(order);
-    log.info("Order {} marked as PAID ✓", orderId);
-
-    // Save payment record
-    Payment payment = Payment.builder()
-            .order(order)
-            .provider(Payment.PaymentProvider.PAYFAST)
-            .providerReference(itnData.get("pf_payment_id"))
-            .status(Payment.PaymentStatus.COMPLETED)
-            .amount(paidAmount)
-            .paidAt(LocalDateTime.now())
-            .build();
-
-    paymentRepository.save(payment);
-    log.info("Payment record saved for order: {}", orderId);
-}
-
 }

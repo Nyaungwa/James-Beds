@@ -11,13 +11,13 @@ import java.math.BigDecimal;
 import java.util.List;
 
 /**
- * DataSeeder runs automatically every time the app starts (CommandLineRunner).
- * It checks if products already exist, and only inserts if the table is empty.
- * This means you can restart the app without getting duplicate data.
+ * Seeds the product catalogue on first startup.
+ * Runs automatically via {@link CommandLineRunner} and inserts the initial
+ * product records only when the products table is empty, making restarts safe.
  */
-@Component           // Spring picks this up and manages it
-@RequiredArgsConstructor  // Lombok: generates constructor for final fields (replaces @Autowired)
-@Slf4j               // Lombok: gives us a log.info() / log.debug() logger
+@Component
+@RequiredArgsConstructor
+@Slf4j
 public class DataSeeder implements CommandLineRunner {
 
     private final ProductRepository productRepository;
@@ -25,7 +25,6 @@ public class DataSeeder implements CommandLineRunner {
     @SuppressWarnings("null")
     @Override
     public void run(String... args) {
-        // Only seed if there are no products yet
         if (productRepository.count() > 0) {
             log.info("Products already seeded. Skipping.");
             return;

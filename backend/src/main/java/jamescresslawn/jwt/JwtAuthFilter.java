@@ -17,6 +17,10 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+/**
+ * Servlet filter that intercepts every request and validates the JWT bearer token
+ * from the {@code Authorization} header, populating the Spring Security context on success.
+ */
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -27,9 +31,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(
-            @NonNull HttpServletRequest request,    // ← added @NonNull
-            @NonNull HttpServletResponse response,  // ← added @NonNull
-            @NonNull FilterChain filterChain        // ← added @NonNull
+            @NonNull HttpServletRequest request,
+            @NonNull HttpServletResponse response,
+            @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
 
         final String authHeader = request.getHeader("Authorization");

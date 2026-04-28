@@ -5,13 +5,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
- * PayFastConfig reads all PayFast-related settings from application.properties.
- *
- * Why use @Value instead of hardcoding?
- * - You can swap sandbox credentials for live credentials
- *   by just changing application.properties
- * - Credentials never appear in your source code
- * - In production, these come from environment variables, not the file
+ * Configuration properties for the PayFast payment gateway.
+ * All values are injected from application.properties and can be overridden
+ * via environment variables for production deployments.
  */
 @Component
 @Getter
@@ -39,9 +35,9 @@ public class PayFastConfig {
     private String cancelUrl;
 
     /**
-     * Returns the correct PayFast payment URL.
-     * Sandbox = test environment (no real money)
-     * Live = real payments
+     * Returns the appropriate PayFast payment URL based on the sandbox flag.
+     *
+     * @return sandbox or live PayFast payment endpoint
      */
     public String getPaymentUrl() {
         return sandbox

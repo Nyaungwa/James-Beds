@@ -20,13 +20,15 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+/**
+ * Spring Security configuration.
+ * Configures stateless JWT-based authentication, CORS, CSRF, and endpoint authorization rules.
+ */
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    // JwtAuthFilter is injected here - it no longer causes a cycle because
-    // UserDetailsService is now defined in a separate UserDetailsServiceConfig class
     private final JwtAuthFilter jwtAuthFilter;
     private final UserDetailsService userDetailsService;
     private final CorsConfigurationSource corsConfigurationSource;

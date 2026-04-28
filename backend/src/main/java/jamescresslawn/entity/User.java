@@ -14,6 +14,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * JPA entity representing an application user.
+ * Implements {@link UserDetails} so Spring Security can use this class
+ * directly for authentication without a separate adapter.
+ */
 @Entity
 @Table(name = "users")
 @Getter
@@ -21,12 +26,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-/*
- * UserDetails is a Spring Security interface.
- * By implementing it, Spring Security knows how to use this class
- * for authentication — it knows where to find the password,
- * the username, and the user's roles/permissions.
- */
 public class User implements UserDetails {
 
     @Id
@@ -66,44 +65,27 @@ public class User implements UserDetails {
     @Builder.Default
     private List<CartItem> cartItems = new ArrayList<>();
 
-    // -----------------------------------------------
-    // UserDetails interface methods
-    // Spring Security calls these to check the user
-    // -----------------------------------------------
-
     /**
-     * Returns the user's permissions/roles.
-     * We give each user a single role: ROLE_USER or ROLE_ADMIN.
-     * Spring Security expects role names to start with "ROLE_".
+     * Returns the user's granted authorities. Spring Security requires role names
+     * to be prefixed with {@code ROLE_}.
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
-    /**
-     * Spring Security calls this to get the password for verification.
-     * We return passwordHash because we stored the hashed version.
-     */
+    /** Returns the BCrypt-hashed password used by Spring Security for credential verification. */
     @Override
     public String getPassword() {
         return passwordHash;
     }
 
-    /**
-     * Spring Security uses this as the unique identifier (username).
-     * We use email instead of a username field.
-     */
+    /** Returns the email address as the unique identifier for Spring Security. */
     @Override
     public String getUsername() {
         return email;
     }
 
-    /**
-     * These four methods control account status.
-     * Return true for all = account is active with no restrictions.
-     * You can add logic here later (e.g. email verification, banning users).
-     */
     @Override
     public boolean isAccountNonExpired() { return true; }
 

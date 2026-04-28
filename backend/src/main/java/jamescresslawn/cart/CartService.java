@@ -17,6 +17,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Service layer for shopping cart business logic.
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -27,9 +30,8 @@ public class CartService {
     private final UserRepository userRepository;
 
     /**
-     * Gets the currently logged-in user from the JWT token.
-     * The JwtAuthFilter already validated the token and stored the email
-     * in Spring's SecurityContextHolder before this method is ever called.
+     * Resolves the currently authenticated user from the Spring Security context.
+     * The email is populated by {@link jamescresslawn.jwt.JwtAuthFilter} prior to this call.
      */
     private User getCurrentUser() {
         String email = SecurityContextHolder.getContext()

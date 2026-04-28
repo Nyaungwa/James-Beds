@@ -9,9 +9,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "cart_items",
-        // This constraint prevents the same product being added twice to the same
-        // user's cart
-        // Instead of two rows, we just increase the quantity
+        // Unique constraint prevents duplicate rows for the same user+product combination.
         uniqueConstraints = @UniqueConstraint(columnNames = { "user_id", "product_id" }))
 @Getter
 @Setter

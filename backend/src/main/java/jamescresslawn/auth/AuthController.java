@@ -8,10 +8,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+/**
+ * REST controller for user authentication.
+ * Exposes endpoints under /api/auth.
+ */
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")  // Allow React frontend to call this
+@CrossOrigin(origins = "*")
 public class AuthController {
 
     private final AuthService authService;
@@ -42,7 +46,6 @@ public class AuthController {
             AuthResponse response = authService.register(request);
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (RuntimeException e) {
-            // Return 400 with the error message (e.g. "Email already registered")
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
@@ -71,7 +74,6 @@ public class AuthController {
             AuthResponse response = authService.login(request);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            // Return 401 Unauthorized for bad credentials
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("error", "Invalid email or password"));
         }
@@ -85,8 +87,6 @@ public class AuthController {
     @GetMapping("/me")
     public ResponseEntity<?> getCurrentUser(
             @RequestHeader("Authorization") String authHeader) {
-        // The JWT filter already validated the token before this runs
-        // Spring Security has the user in context — we just return a confirmation
         return ResponseEntity.ok(Map.of("message", "Token is valid"));
     }
 }

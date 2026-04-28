@@ -27,37 +27,30 @@ public class Product {
     @NotBlank
     private String name;
 
-    // Full description of the product
-    @Column(columnDefinition = "TEXT")   // TEXT allows long descriptions (no character limit)
+    @Column(columnDefinition = "TEXT")
     private String description;
 
-    // Type of product: BED or MATTRESS
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ProductType type;
 
-    // Size: SINGLE, THREE_QUARTER, DOUBLE, QUEEN, KING
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ProductSize size;
 
-    // Comfort level for mattresses: SOFT, MEDIUM, FIRM, EXTRA_FIRM
     @Enumerated(EnumType.STRING)
     @Column(name = "comfort_level")
     private ComfortLevel comfortLevel;
 
-    // ALWAYS use BigDecimal for money - never double or float
-    // double causes rounding errors: 99.99 + 0.01 might = 100.00000000001
+    // BigDecimal is required for monetary values — floating-point types introduce rounding errors.
     @Column(nullable = false, precision = 10, scale = 2)
     @NotNull
     @Positive
     private BigDecimal price;
 
-    // Optional discounted price (null = no discount)
     @Column(name = "discount_price", precision = 10, scale = 2)
     private BigDecimal discountPrice;
 
-    // URL to the product image (stored in cloud storage or your server)
     @Column(name = "image_url")
     private String imageUrl;
 
@@ -69,17 +62,15 @@ public class Product {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    // ------------------------------------------------
-    // Helper method: returns the effective price
-    // If there's a discount price, use that; otherwise use regular price
-    // ------------------------------------------------
+    /**
+     * Returns the applicable selling price: the discount price if set, otherwise the regular price.
+     *
+     * @return effective price for order calculations
+     */
     public BigDecimal getEffectivePrice() {
         return discountPrice != null ? discountPrice : price;
     }
 
-    // ------------------------------------------------
-    // Enums for product properties
-    // ------------------------------------------------
     public enum ProductType {
         BED, MATTRESS
     }

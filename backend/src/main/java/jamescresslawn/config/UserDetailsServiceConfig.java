@@ -8,18 +8,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 /**
- * Separated into its own class to break the circular dependency:
- *
- * BEFORE (circular):
- *   JwtAuthFilter → needs UserDetailsService
- *   SecurityConfig → defines UserDetailsService AND needs JwtAuthFilter
- *   Result: A needs B, B needs A = Spring can't create either
- *
- * AFTER (fixed):
- *   JwtAuthFilter → needs UserDetailsService (from THIS class)
- *   SecurityConfig → needs JwtAuthFilter (no longer defines UserDetailsService)
- *   UserDetailsServiceConfig → defines UserDetailsService (no dependencies on the others)
- *   Result: clean, no cycle
+ * Defines the {@link UserDetailsService} bean in a dedicated configuration class
+ * to break the circular dependency between {@link SecurityConfig} and
+ * {@link jamescresslawn.jwt.JwtAuthFilter}: both previously required each other
+ * via {@code UserDetailsService}, preventing Spring from constructing either bean.
  */
 @Configuration
 @RequiredArgsConstructor

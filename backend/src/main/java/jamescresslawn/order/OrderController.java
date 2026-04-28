@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * REST controller for order management.
+ * Exposes endpoints under /api/orders. All endpoints require authentication.
+ */
 @RestController
 @RequestMapping("/api/orders")
 @RequiredArgsConstructor
@@ -51,7 +55,6 @@ public class OrderController {
     public ResponseEntity<?> createOrder(
             @RequestBody(required = false) CreateOrderRequest request) {
         try {
-            // If frontend sends no body at all, create an empty request object
             if (request == null) {
                 request = new CreateOrderRequest();
             }
